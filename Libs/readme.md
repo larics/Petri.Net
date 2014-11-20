@@ -1,1 +1,1 @@
-Libs.zip should be unpacked here in order to succesfully compile
+[Libs.zip](https://github.com/larics/Petri.Net/releases/download/v0.0/libs.zip) should be unpacked here in order to succesfully compile
