@@ -2501,6 +2501,15 @@ namespace PetriNetSimulator2
 		#region private void lblOscillogram_DoubleClick(object sender, EventArgs e)
 		private void lblOscillogram_DoubleClick(object sender, EventArgs e)
 		{
+            if (this.sSimulator.resultDataFromSimulation == null)
+            {
+                MessageBox.Show("There are no recorded data to show !!!\nRun the simulation first",
+                                "Petri .NET Simulator 2.0 - Information", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Information);
+                return;
+            }
+
 			ResponsePlacesEditorForm rpefEditor = new ResponsePlacesEditorForm(this, this.roOptions.Places);
 			if (DialogResult.OK == rpefEditor.ShowDialog())
 			{

@@ -8,6 +8,7 @@ using IronPython.Hosting;
 using IronPython.Runtime;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
+using System.Collections.Generic;
 
 
 namespace PetriNetSimulator2
@@ -94,9 +95,12 @@ namespace PetriNetSimulator2
 			{
 				// TODO : Deselect all selected controls in pnd
 
+                SaveDataForCharting(0);
 				while(true)
 				{
 					this.Step();
+
+                    SaveDataForCharting(this.pnd.StepCounter);
 
 					// Find is there any transition that can fire
                     if (this.pnd.FireableTransitions.Count != 0)
@@ -214,6 +218,7 @@ namespace PetriNetSimulator2
 				}
 				#endregion
 
+                SaveDataForCharting(0);
 				// Simulate
 				for (int k = 1; k <= this.pnd.EndTime/this.pnd.Td; k++)
 				{
@@ -624,9 +629,9 @@ namespace PetriNetSimulator2
 					{
 						((Place)this.pnd.GroupedPlaces[j]).Tokens = imk[j, 0];
 					}
-
                     this.pnd.StepCounter++;
-				}
+                    SaveDataForCharting(this.pnd.StepCounter);
+                }
 
 				this.bRunning = false;
 
@@ -638,541 +643,50 @@ namespace PetriNetSimulator2
 		}
 		#endregion
 
-		#region public IntMatrix SimulateToMatrix(int iEndTime)
-		public IntMatrix SimulateToMatrix(int iEndTime)
+
+        #region Save Data for Charting
+
+        public List<List<int>> resultDataFromSimulation = null;
+        public void SaveDataForCharting(int k)
+        {
+            List<int> row = new List<int>();
+
+            if (k == 0)    // Reinitialize and begin ... 
+                resultDataFromSimulation = new List<List<int>>();
+
+            for (int i = 0; i < pnd.GroupedPlaces.Count; i++)
+                row.Add(((Place)pnd.GroupedPlaces[i]).Tokens);
+
+            resultDataFromSimulation.Add(row);
+        }
+        #endregion
+
+        #region public IntMatrix SimulateToMatrix(int iEndTime)
+        public IntMatrix SimulateToMatrix(int iEndTime)
 		{
-			IntMatrix im = new IntMatrix(pnd.GroupedPlaces.Count, iEndTime + 1);
-			IntMatrix Wt = pnd.W.Transpose();
-
-			IntMatrix imF = this.pnd.F;
-
-			ArrayList alGroupedPlaces = this.pnd.GroupedPlaces;
-			ArrayList alInputPlaces = this.pnd.InputPlaces;
-			ArrayList alOperationPlaces = this.pnd.OperationPlaces;
-			ArrayList alResourcePlaces = this.pnd.ResourcePlaces;
-			ArrayList alControlPlaces = this.pnd.ControlPlaces;
-			ArrayList alOutputPlaces = this.pnd.OutputPlaces;
-			ArrayList alTransitions = this.pnd.Transitions;
-
-			// Initial condition
-			for (int i = 0; i < alGroupedPlaces.Count; i++)
-			{
-				if (ht.Count != 0)
-				{
-					im[i, 0] = (int)ht[alGroupedPlaces[i]];
-				}
-				else
-				{
-					im[i, 0] = ((Place)alGroupedPlaces[i]).Tokens;
-				}
-			}
-				
-			// Get mks
-			IntMatrix imks = im.GetColumn(0);
-
-			// Get index of first control place
-			int iIndexOfFirstControlPlace = -1;
-			if (pnd.ControlPlaces.Count != 0)
-			{
-				iIndexOfFirstControlPlace = alGroupedPlaces.IndexOf(pnd.ControlPlaces[0]);
-			}
-
-			#region Set inputs
-			// Set inputs
-			Hashtable htInputTokens = new Hashtable();
-			foreach(PlaceInput pi in pnd.InputPlaces)
-			{
-				if (pi.InputType == InputType.Periodic)
-				{
-					ArrayList alInputTimes = new ArrayList();
-
-					int iTime = 0;
-					while (iTime < iEndTime)
-					{
-						iTime += pi.Interval;
-						alInputTimes.Add(iTime);
-					}
-
-					htInputTokens.Add(pi, alInputTimes);
-				}
-				else if (pi.InputType == InputType.Stohastic)
-				{
-					ArrayList alInputTimes = new ArrayList();
-					Random r = new Random(Environment.TickCount);
-					int iTime = 0;
-					while (iTime < iEndTime)
-					{
-						int i = r.Next(1, pi.RandomInterval);
-						iTime += i;
-						alInputTimes.Add(iTime);
-					}
-
-					htInputTokens.Add(pi, alInputTimes);
-				}
-			}
-			#endregion
-
-			#region if (this.pnd.PetriNetType == PetriNetType.TimeInvariant)
-			if (this.pnd.PetriNetType == PetriNetType.TimeInvariant)
-			{
-				// Simulate
-				for (int k = 1; k <= iEndTime; k++)
-				{
-					// Get mk
-					IntMatrix imk = im.GetColumn(k - 1);
-
-					#region Set control vector
-					// Set control vector
-					if (alControlPlaces.Count != 0)
-					{
-						// Set all control places tokens to 1 if they don't have parents
-						for(int i = 0; i < alControlPlaces.Count; i++)
-						{
-							if (((Place)alControlPlaces[i]).Parents.Count == 0)
-								imk[iIndexOfFirstControlPlace + i, 0] = 1;
-						}
-
-						foreach(Rule r in this.pnd.Rules)
-						{
-							int[] iaTokensVector = new int[alGroupedPlaces.Count];
-
-							for (int i = 0; i < iaTokensVector.Length; i++)
-							{
-								iaTokensVector[i] = (int)imk[i, 0];
-							}
-
-							char[] ca = r.ControlVector(alGroupedPlaces, alControlPlaces, iaTokensVector);
-
-							if (ca != null)
-							{
-								for(int i = 0; i < ca.Length; i++)
-								{
-									if (ca[i] != 'x')
-									{
-										if (((Place)alControlPlaces[i]).Parents.Count == 0)
-											imk[iIndexOfFirstControlPlace + i, 0] = int.Parse(ca[i].ToString());
-									}
-								}
-							}
-						}
-					}
-					#endregion
-
-					#region Find transitions that can fire
-					// Find transitions that can fire
-					IntMatrix imT = new IntMatrix(alTransitions.Count, 1);
-
-					for (int i = 0; i < alTransitions.Count; i++)
-					{
-						Transition t = (Transition)alTransitions[i];
-						ArrayList alPlaceParents = t.PlaceParents;
-
-						int iCountMetConditions = 0;
-						for (int j = 0; j < alPlaceParents.Count; j++)
-						{
-							Place p = (Place)alPlaceParents[j];
-
-							if ((int)imk[alGroupedPlaces.IndexOf(p), 0] >= imF[i, alGroupedPlaces.IndexOf(p)])
-							{
-								iCountMetConditions++;
-							}
-						}
-
-						if (iCountMetConditions == alPlaceParents.Count && alPlaceParents.Count != 0)
-							imT[i, 0] = 1;
-					}
-					#endregion
-
-					// Calculate mk+1
-					imk = imk + Wt * imT;
-
-					// Set Inputs
-					if (alInputPlaces.Count != 0)
-					{
-						for(int i = 0; i < alInputPlaces.Count; i++)
-						{
-							PlaceInput pi = (PlaceInput)alInputPlaces[i];
-							if (pi.InputType != InputType.Fixed)
-							{
-								if (((ArrayList)htInputTokens[pi]).Contains(k))
-									imk[i, 0] += 1;
-							}
-						}
-					}
-
-					for (int i = 0; i < imk.Dimensions.Height; i++)
-					{
-						im[i, k] = imk[i, 0];
-					}
-				}
-			}
-			#endregion
-
-			#region else if (this.pnd.PetriNetType == PetriNetType.PTimed)
-			else if (this.pnd.PetriNetType == PetriNetType.PTimed)
-			{
-				// Initialize
-				IntMatrix Ft = imF.Transpose();
-
-				IntMatrix Sv = this.pnd.Sv;
-				IntMatrix Sr = this.pnd.Sr;
-				IntMatrix Sd = this.pnd.Sd;
-				IntMatrix Sy = this.pnd.Sy;
-
-				IntMatrix Tv0 = pnd.Tv0;
-				IntMatrix Tr0 = pnd.Tr0;
-				IntMatrix Td0 = pnd.Td0;
-				IntMatrix Ty0 = pnd.Ty0;
-
-				IntMatrix[] Tv = new IntMatrix[1];
-				Tv[0] = new IntMatrix(Tv0.Dimensions.Height, Tv0.Dimensions.Width);
-
-				IntMatrix[] Tr = new IntMatrix[1];
-				Tr[0] = new IntMatrix(Tr0.Dimensions.Height, Tr0.Dimensions.Width);
-
-				IntMatrix[] Td = new IntMatrix[1];
-				Td[0] = new IntMatrix(Td0.Dimensions.Height, Td0.Dimensions.Width);
-
-				IntMatrix[] Ty = new IntMatrix[1];
-				Ty[0] = new IntMatrix(Ty0.Dimensions.Height, Ty0.Dimensions.Width);
-
-				// Simulate
-				for (int k = 1; k <= iEndTime; k++)
-				{
-					// Get mk
-					IntMatrix imk = im.GetColumn(k - 1);
-
-					#region Set control vector
-					// Set control vector
-					if (alControlPlaces.Count != 0)
-					{
-						// Set all control places tokens to 1 if they don't have parents
-						for(int i = 0; i < alControlPlaces.Count; i++)
-						{
-							if (((Place)alControlPlaces[i]).Parents.Count == 0)
-								imk[iIndexOfFirstControlPlace + i, 0] = 1;
-						}
-
-						foreach(Rule r in this.pnd.Rules)
-						{
-							int[] iaTokensVector = new int[alGroupedPlaces.Count];
-
-							for (int i = 0; i < iaTokensVector.Length; i++)
-							{
-								iaTokensVector[i] = (int)imk[i, 0];
-							}
-
-							char[] ca = r.ControlVector(alGroupedPlaces, alControlPlaces, iaTokensVector);
-
-							if (ca != null)
-							{
-								for(int i = 0; i < ca.Length; i++)
-								{
-									if (ca[i] != 'x')
-									{
-										if (((Place)alControlPlaces[i]).Parents.Count == 0)
-											imk[iIndexOfFirstControlPlace + i, 0] = int.Parse(ca[i].ToString());
-									}
-								}
-							}
-						}
-					}
-					#endregion
-
-					#region Find transitions that can fire
-					// Find transitions that can fire
-					IntMatrix imT = new IntMatrix(alTransitions.Count, 1);
-
-					for (int i = 0; i < alTransitions.Count; i++)
-					{
-						Transition t = (Transition)alTransitions[i];
-						ArrayList alPlaceParents = t.PlaceParents;
-
-						int iCountMetConditions = 0;
-						for (int j = 0; j < alPlaceParents.Count; j++)
-						{
-							Place p = (Place)alPlaceParents[j];
-
-							if ((int)imk[alGroupedPlaces.IndexOf(p), 0] >= imF[i, alGroupedPlaces.IndexOf(p)])
-							{
-								iCountMetConditions++;
-							}
-						}
-
-						if (iCountMetConditions == alPlaceParents.Count && alPlaceParents.Count != 0)
-							imT[i, 0] = 1;
-					}
-					#endregion
-
-					// Calculate mks+1
-					imks = imks + Wt * imT;
-
-					#region Determine maximum tokens in one place
-					// Determine maximum tokens in one place
-					int iMaxTokens = 0;
-					IntMatrix imOpsAndRes = new IntMatrix(alOperationPlaces.Count + alResourcePlaces.Count, 1);
-					for(int z = 0; z < alOperationPlaces.Count; z++)
-					{
-						imOpsAndRes[z, 0] = imks[alInputPlaces.Count + z, 0];
-					}
-					for(int z = 0; z < alResourcePlaces.Count; z++)
-					{
-						imOpsAndRes[alOperationPlaces.Count + z, 0] = imks[alInputPlaces.Count + alOperationPlaces.Count + z, 0];
-					}
-
-					iMaxTokens = imOpsAndRes.Max();
-					#endregion
-
-					#region Adjust sizes of Tx matrixes
-					// Adjust sizes of Tx matrixes
-					if (iMaxTokens > Tv.Length)
-					{
-						IntMatrix[] Tvx = new IntMatrix[iMaxTokens];
-						for (int i = 0; i < iMaxTokens; i++)
-						{
-							Tvx[i] = new IntMatrix(Tv0.Dimensions.Height, Tv0.Dimensions.Width);
-						}
-						Tv.CopyTo(Tvx, 0);
-						Tv = Tvx;
-
-						IntMatrix[] Trx = new IntMatrix[iMaxTokens];
-						for (int i = 0; i < iMaxTokens; i++)
-						{
-							Trx[i] = new IntMatrix(Tr0.Dimensions.Height, Tr0.Dimensions.Width);
-						}
-						Tr.CopyTo(Trx, 0);
-						Tr = Trx;
-
-						IntMatrix[] Tdx = new IntMatrix[iMaxTokens];
-						for (int i = 0; i < iMaxTokens; i++)
-						{
-							Tdx[i] = new IntMatrix(Td0.Dimensions.Height, Td0.Dimensions.Width);
-						}
-						Td.CopyTo(Tdx, 0);
-						Td = Tdx;
-
-						IntMatrix[] Tyx = new IntMatrix[iMaxTokens];
-						for (int i = 0; i < iMaxTokens; i++)
-						{
-							Tyx[i] = new IntMatrix(Ty0.Dimensions.Height, Ty0.Dimensions.Width);
-						}
-						Ty.CopyTo(Tyx, 0);
-						Ty = Tyx;
-					}
-					#endregion
-
-					// Calculate Tx_temp matrixes
-					IntMatrix Tv_temp = IntMatrix.MulTim(Tv0, imT);
-					IntMatrix Tr_temp = IntMatrix.MulTim(Tr0, imT);
-					IntMatrix Td_temp = IntMatrix.MulTim(Td0, imT);
-					IntMatrix Ty_temp = IntMatrix.MulTim(Ty0, imT);
-
-					try
-					{
-						#region Adjust Tv matrix
-
-						// Put new values in table
-						for (int m = 0; m < Tv0.Dimensions.Height; m++)
-						{
-							for (int l = 0; l < Tv0.Dimensions.Width; l++)
-							{
-								if (Tv_temp[m, l] > 0)
-								{
-									// Find first available position in Tv matrix
-									int iAvailable = -1;
-									for (int z = 0; z < Tv.Length; z++)
-									{
-										if (Tv[z][m, l] == 0)
-										{
-											iAvailable = z;
-											break;
-										}
-									}
-
-									if (iAvailable == -1)
-										throw new ArgumentOutOfRangeException("No free layer. Max tokens number in one place has been exceeded.");
-
-									Tv[iAvailable][m, l] = Tv_temp[m, l];
-									Tv_temp[m, l] = 0;
-								}
-							}
-						}
-
-						// Decrement all values by 1
-						for (int ctn = 0; ctn < Tv.Length; ctn++)
-						{
-							for (int m = 0; m < Tv0.Dimensions.Height; m++)
-							{
-								for (int l = 0; l < Tv0.Dimensions.Width; l++)
-								{
-									if (Tv[ctn][m, l] > 0)
-									{
-										if (Tv[ctn][m, l] == 1)
-											imk[m + alInputPlaces.Count, 0] = imk[m + alInputPlaces.Count, 0] + Sv[m, l];
-
-										Tv[ctn][m, l] = Tv[ctn][m, l] - 1;
-									}
-								}
-							}
-						}
-
-						#endregion
-
-						#region Adjust Tr matrix
-
-						// Put new values in table
-						for (int m = 0; m < Tr0.Dimensions.Height; m++)
-						{
-							for (int l = 0; l < Tr0.Dimensions.Width; l++)
-							{
-								if (Tr_temp[m, l] > 0)
-								{
-									// Find first available position in Tr matrix
-									int iAvailable = -1;
-									for (int z = 0; z < Tr.Length; z++)
-									{
-										if (Tr[z][m, l] == 0)
-										{
-											iAvailable = z;
-											break;
-										}
-									}
-
-									if (iAvailable == -1)
-										throw new ArgumentOutOfRangeException("No free layer. Max tokens number in one place has been exceeded.");
-
-									Tr[iAvailable][m, l] = Tr_temp[m, l];
-									Tr_temp[m, l] = 0;
-								}
-							}
-						}
-
-						// Decrement all values by 1
-						for (int ctn = 0; ctn < Tr.Length; ctn++)
-						{
-							for (int m = 0; m < Tr0.Dimensions.Height; m++)
-							{
-								for (int l = 0; l < Tr0.Dimensions.Width; l++)
-								{
-									if (Tr[ctn][m, l] > 0)
-									{
-										if (Tr[ctn][m, l] == 1)
-											imk[m + alInputPlaces.Count + alOperationPlaces.Count, 0] = imk[m + alInputPlaces.Count + alOperationPlaces.Count, 0] + Sr[m, l];
-
-										Tr[ctn][m, l] = Tr[ctn][m, l] - 1;
-									}
-								}
-							}
-						}
-
-						#endregion
-
-						#region Adjust Td matrix
-						for (int ctn = 0; ctn < iMaxTokens; ctn++)
-						{
-							for (int m = 0; m < Td0.Dimensions.Height; m++)
-							{
-								for (int l = 0; l < Td0.Dimensions.Width; l++)
-								{
-									if (Td_temp[m, l] > 0)
-									{
-										if (Td[ctn][m, l] > 0)
-										{
-											Td[ctn+1][m, l] = Td_temp[m, l];
-											Td_temp[m, l] = 0;
-										}
-										else
-										{
-											Td[ctn][m, l] = Td_temp[m, l];
-											Td_temp[m, l] = 0;
-										}
-									}
-
-									if (Td[ctn][m, l] == 1)
-									{
-										imk[m + alInputPlaces.Count + alOperationPlaces.Count + alResourcePlaces.Count, 0] = imk[m + alInputPlaces.Count + alOperationPlaces.Count + alResourcePlaces.Count, 0] + Sd[m, l];
-										Td[ctn][m, l] = Td[ctn][m, l] - 1;
-									}
-								}
-							}
-						}
-						#endregion
-
-						#region Adjust Ty matrix
-						for (int ctn = 0; ctn < iMaxTokens; ctn++)
-						{
-							for (int m = 0; m < Ty0.Dimensions.Height; m++)
-							{
-								for (int l = 0; l < Ty0.Dimensions.Width; l++)
-								{
-									if (Ty_temp[m, l] > 0)
-									{
-										if (Ty[ctn][m, l] > 0)
-										{
-											Ty[ctn+1][m, l] = Ty_temp[m, l];
-											Ty_temp[m, l] = 0;
-										}
-										else
-										{
-											Ty[ctn][m, l] = Ty_temp[m, l];
-											Ty_temp[m, l] = 0;
-										}
-									}
-
-									if (Ty[ctn][m, l] > 0)
-									{
-										imk[m + alInputPlaces.Count + alOperationPlaces.Count + alResourcePlaces.Count + alControlPlaces.Count, 0] = imk[m + alInputPlaces.Count + alOperationPlaces.Count + alResourcePlaces.Count + alControlPlaces.Count, 0] + Sy[m, l];
-										Ty[ctn][m, l] = Ty[ctn][m, l] - 1;
-									}
-								}
-							}
-						}
-						#endregion
-					}
-					catch (ArgumentOutOfRangeException e)
-					{
-						for (int i = 0; i < imk.Dimensions.Height; i++)
-						{
-							im[i, k] = -1;
-						}
-
-						MessageBox.Show(e.ToString());
-						break;
-					}
-
-					// Calculate mk+1
-					imk = imk - Ft * imT;
-
-					#region Set Inputs
-					// Set Inputs
-					if (alInputPlaces.Count != 0)
-					{
-						for(int i = 0; i < alInputPlaces.Count; i++)
-						{
-							PlaceInput pi = (PlaceInput)alInputPlaces[i];
-							if (pi.InputType != InputType.Fixed)
-							{
-								if (((ArrayList)htInputTokens[pi]).Contains(k))
-								{
-									imk[i, 0] += 1;
-									imks[i, 0] += 1;
-								}
-							}
-						}
-					}
-					#endregion
-
-					for (int i = 0; i < imk.Dimensions.Height; i++)
-					{
-						im[i, k] = imk[i, 0];
-					}
-				}
-			}
-			#endregion
-
-			// Return result
-			return im;
-		}
+            IntMatrix im = new IntMatrix(pnd.GroupedPlaces.Count, iEndTime + 1);
+            try
+            {
+                if (resultDataFromSimulation != null)
+                {
+                    for (int idx = 0; idx < iEndTime; idx++)
+                    {
+                        int k = idx;
+
+                        if (k < resultDataFromSimulation.Count)
+                        {
+                            List<int> row = resultDataFromSimulation[k];
+                            for (int i = 0; i < row.Count; i++)
+                                im[i, idx] = (int)row[i];
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            { 
+            }
+            return im;
+        }
 		#endregion
 
 		#region public void Start()
