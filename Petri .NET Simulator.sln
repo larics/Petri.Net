@@ -1,0 +1,22 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Petri .NET Simulator", "Petri .NET Simulator\Petri .NET Simulator.csproj", "{A600359C-2A09-4440-B168-536AB5209429}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A600359C-2A09-4440-B168-536AB5209429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A600359C-2A09-4440-B168-536AB5209429}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A600359C-2A09-4440-B168-536AB5209429}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{A600359C-2A09-4440-B168-536AB5209429}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {E345496E-2F4B-4B8F-A22E-28914C07A3E5}
+	EndGlobalSection
+EndGlobal
