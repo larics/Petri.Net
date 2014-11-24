@@ -6,11 +6,11 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Petri.NET Simulator")]
+[assembly: AssemblyDescription("A Petri net simulator")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
+[assembly: AssemblyProduct("Petri.NET Simulator")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		

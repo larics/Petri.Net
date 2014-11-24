@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading;
 using System.Globalization;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace PetriNetSimulator2
 {
@@ -1536,8 +1537,19 @@ namespace PetriNetSimulator2
 			{
 				this.Cursor = Cursors.WaitCursor;
 
+                Version version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
+                DateTime buildDateTime = new DateTime(2000, 1, 1).Add(new TimeSpan(
+                                                        TimeSpan.TicksPerDay * version.Build + // days since 1 January 2000
+                                                        TimeSpan.TicksPerSecond * 2 * version.Revision));
+
+
+
 				// Initialize the WebRequest.
-				WebRequest myRequest = WebRequest.Create("http://petrinet.bigeneric.com/version.txt");
+                WebRequest myRequest = WebRequest.Create("https://github.com/larics/Petri.Net/releases");
+                
+                WebProxy proxyObject = WebProxy.GetDefaultProxy();
+                proxyObject.Credentials = System.Net.CredentialCache.DefaultCredentials;
+                myRequest.Proxy = proxyObject;
 
 				// Return the response.
 				WebResponse myResponse = myRequest.GetResponse();
@@ -1545,38 +1557,51 @@ namespace PetriNetSimulator2
 				// Code to use the WebResponse goes here.
 				Stream sContents = myResponse.GetResponseStream();
 				StreamReader reader = new StreamReader(sContents);
-				String sVersion = reader.ReadToEnd();
+				String sHtmlCode = reader.ReadToEnd();
 
 				// Close the response to free resources.
 				myResponse.Close();
+                bool bIsNewAvailable = false;
 
-				//determine latest version;
-				string[] sLatestVersion, sCurrentVersion;
-				sLatestVersion = sVersion.Split(new char[]{'.'});
-				sCurrentVersion = Application.ProductVersion.Split(new char[]{'.'});
+                try
+                {
+                    string sVersion = String.Empty; ;
+                    // Find (Version:XXXXXXXXXXXXX)
+                    string pattern = @"\(Version:([^)]*)\)";
+                    Regex regex = new Regex(pattern);
+                    Match match = regex.Match(sHtmlCode);
+                    if (match.Success)
+                        sVersion = match.Value.Replace("(Version:", "").Replace(")", "").Trim();
 
-				//Check if there is newer version
-				int iIsNewAvailable = 0;
-				if (int.Parse(sLatestVersion[0]) > int.Parse(sCurrentVersion[0]))
-					iIsNewAvailable = 1;
-				else if (int.Parse(sLatestVersion[0]) == int.Parse(sCurrentVersion[0]))
-					if (int.Parse(sLatestVersion[1]) > int.Parse(sCurrentVersion[1]))
-						iIsNewAvailable = 1;
-					else if (int.Parse(sLatestVersion[1]) == int.Parse(sCurrentVersion[1]))
-						if (int.Parse(sLatestVersion[2]) > int.Parse(sCurrentVersion[2]))
-							iIsNewAvailable = 1;
-						else if (int.Parse(sLatestVersion[2]) == int.Parse(sCurrentVersion[2]))
-							if (int.Parse(sLatestVersion[3]) > int.Parse(sCurrentVersion[3]))
-								iIsNewAvailable = 1;
+                    //determine latest version;
+                    string[] sLatestVersion, sCurrentVersion;
+                    sLatestVersion = sVersion.Split(new char[] { '.' });
+                    sCurrentVersion = Application.ProductVersion.Split(new char[] { '.' });
 
-				if (iIsNewAvailable == 0)
-					MessageBox.Show("You already have the latest version of Petri .NET Simulator!\nUpdate is not needed!", "Petri .NET Simulator 2.0 Information - Version up-to-date", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				else
-				{
-					if (DialogResult.Yes == MessageBox.Show("There is new version available : " + sVersion + "!\nDo you wish to go to Petri .NET Simulator web page?", "Petri .NET Simulator 2.0 Information - new version available", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information))
-						API.ShellExecute(IntPtr.Zero, "Open", "http://petrinet.bigeneric.com/index.html", null, null, 3);
-				}
+                    //Check if there is newer version
+                    if (int.Parse(sLatestVersion[0]) > int.Parse(sCurrentVersion[0]))
+                        bIsNewAvailable = true;
+                    else if (int.Parse(sLatestVersion[0]) == int.Parse(sCurrentVersion[0]))
+                        if (int.Parse(sLatestVersion[1]) > int.Parse(sCurrentVersion[1]))
+                            bIsNewAvailable = true;
+                        else if (int.Parse(sLatestVersion[1]) == int.Parse(sCurrentVersion[1]))
+                            if (int.Parse(sLatestVersion[2]) > int.Parse(sCurrentVersion[2]))
+                                bIsNewAvailable = true;
+                            else if (int.Parse(sLatestVersion[2]) == int.Parse(sCurrentVersion[2]))
+                                if (int.Parse(sLatestVersion[3]) > int.Parse(sCurrentVersion[3]))
+                                    bIsNewAvailable = true;
 
+                    if (!bIsNewAvailable)
+                        MessageBox.Show("You already have the latest version of Petri .NET Simulator!\nUpdate is not needed!", "Petri .NET Simulator 2.0 Information - Version up-to-date", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    else
+                    {
+                        if (DialogResult.Yes == MessageBox.Show("There is new version available: " + sVersion + "  !\nDo you wish to go to Petri .NET Simulator web page and check for it ?", "Petri .NET Simulator 2.0 Information - new version available", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
+                            API.ShellExecute(IntPtr.Zero, "Open", "https://github.com/larics/Petri.Net/releases", null, null, 3);
+                    }
+                }
+                catch (Exception ex)
+                { 
+                }
 				this.Cursor = Cursors.Default;
 			}
 			catch(WebException)

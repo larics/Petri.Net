@@ -57,7 +57,7 @@ namespace PetriNetSimulator2
         private void About21_Load(object sender, EventArgs e)
         {
             labelProgBy.Text = "Copyright && program by Goran Genter, 2004 and Ivica Sindicic, 2008-2010";
-            lblAppVersion.Text = "Version : " + Application.ProductVersion;
+            lblAppVersion.Text = "Version:" + Application.ProductVersion;
 
 #if DEMO
 			lblEdition.ForeColor = Color.Red;
@@ -69,6 +69,12 @@ namespace PetriNetSimulator2
             lblEdition.Text = "FULL VERSION";
 #endif
 
+        }
+
+        private void lblAppVersion_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Clipboard.SetText("("+lblAppVersion.Text+")");
+            System.Media.SystemSounds.Beep.Play();
         }
 
     }

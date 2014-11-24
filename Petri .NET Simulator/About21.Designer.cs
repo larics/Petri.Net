@@ -48,6 +48,7 @@ namespace PetriNetSimulator2
             this.lblAppVersion.TabIndex = 0;
             this.lblAppVersion.Text = "Version: xxx.yyy";
             this.lblAppVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblAppVersion.Click += new System.EventHandler(this.lblAppVersion_Click);
             // 
             // lblEdition
             // 
@@ -67,7 +68,7 @@ namespace PetriNetSimulator2
             this.labelProgBy.Name = "labelProgBy";
             this.labelProgBy.Size = new System.Drawing.Size(657, 23);
             this.labelProgBy.TabIndex = 0;
-            this.labelProgBy.Text = "Copyright && program by Goran Genter, 2004 and Ivica Sindicic, 2008-2010";
+            this.labelProgBy.Text = "Copyright && program by Goran Genter, 2004 and Ivica Sindicic, 2008-2015";
             this.labelProgBy.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label1
