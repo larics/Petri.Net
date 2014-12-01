@@ -1526,7 +1526,9 @@ namespace PetriNetSimulator2
 		#region private void mcHelpManual_Click(object sender, System.EventArgs e)
 		private void mcHelpManual_Click(object sender, System.EventArgs e)
 		{
-			API.ShellExecute(IntPtr.Zero, "Open", Application.StartupPath + "\\Manual.pdf", null, null, 3);
+			// API.ShellExecute(IntPtr.Zero, "Open", Application.StartupPath + "\\Manual.pdf", null, null, 3);
+            API.ShellExecute(IntPtr.Zero, "Open", "https://github.com/larics/Petri.NET/wiki", null, null, 3);
+
 		}
 		#endregion
 
