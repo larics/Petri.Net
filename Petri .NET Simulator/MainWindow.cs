@@ -61,6 +61,14 @@ namespace PetriNetSimulator2
 		private Crownwood.Magic.Menus.MenuCommand mcEditGroup = null;
 		private Crownwood.Magic.Menus.MenuCommand mcEditSeparator4 = null;
 		private Crownwood.Magic.Menus.MenuCommand mcEditSelectAll = null;
+
+        private Crownwood.Magic.Menus.MenuCommand mcSimulate = null;
+        private Crownwood.Magic.Menus.MenuCommand mcSimulateStart = null;
+        private Crownwood.Magic.Menus.MenuCommand mcSimulateStartWithParam = null;
+        private Crownwood.Magic.Menus.MenuCommand mcSimulateStep = null;
+        private Crownwood.Magic.Menus.MenuCommand mcSimulateStop = null;
+        private Crownwood.Magic.Menus.MenuCommand mcSimulateReset = null;
+
 		private Crownwood.Magic.Menus.MenuCommand mcView = null;
 		private Crownwood.Magic.Menus.MenuCommand mcHelp = null;
 		private Crownwood.Magic.Menus.MenuCommand mcHelpManual = null;
@@ -226,9 +234,9 @@ namespace PetriNetSimulator2
             ((System.ComponentModel.ISupportInitialize)(this.sbpSimulationTimePanel)).BeginInit();
             this.pnlDocumentPanel.SuspendLayout();
             this.SuspendLayout();
-            //
+            // 
             // ilToolBar
-            //
+            // 
             this.ilToolBar.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilToolBar.ImageStream")));
             this.ilToolBar.TransparentColor = System.Drawing.Color.Transparent;
             this.ilToolBar.Images.SetKeyName(0, "");
@@ -246,9 +254,9 @@ namespace PetriNetSimulator2
             this.ilToolBar.Images.SetKeyName(12, "");
             this.ilToolBar.Images.SetKeyName(13, "");
             this.ilToolBar.Images.SetKeyName(14, "");
-            //
+            // 
             // sbStatusBar
-            //
+            // 
             this.sbStatusBar.Location = new System.Drawing.Point(0, 450);
             this.sbStatusBar.Name = "sbStatusBar";
             this.sbStatusBar.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
@@ -258,19 +266,19 @@ namespace PetriNetSimulator2
             this.sbStatusBar.Size = new System.Drawing.Size(876, 21);
             this.sbStatusBar.TabIndex = 2;
             this.sbStatusBar.Text = "statusBar";
-            //
+            // 
             // sbpPanelMain
-            //
+            // 
             this.sbpPanelMain.Name = "sbpPanelMain";
             this.sbpPanelMain.Text = "Ready";
-            //
+            // 
             // sbpSimulationTimePanel
-            //
+            // 
             this.sbpSimulationTimePanel.Name = "sbpSimulationTimePanel";
             this.sbpSimulationTimePanel.Text = "SimulationTimePanel";
-            //
+            // 
             // tabMagicTab
-            //
+            // 
             this.tabMagicTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMagicTab.HideTabsMode = Crownwood.Magic.Controls.TabControl.HideTabsModes.ShowAlways;
             this.tabMagicTab.Location = new System.Drawing.Point(0, 0);
@@ -280,15 +288,15 @@ namespace PetriNetSimulator2
             this.tabMagicTab.Visible = false;
             this.tabMagicTab.SelectionChanged += new System.EventHandler(this.tabMagicTab_SelectionChanged);
             this.tabMagicTab.ClosePressed += new System.EventHandler(this.tabMagicTab_ClosePressed);
-            //
+            // 
             // ilTabImages
-            //
+            // 
             this.ilTabImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilTabImages.ImageStream")));
             this.ilTabImages.TransparentColor = System.Drawing.Color.Transparent;
             this.ilTabImages.Images.SetKeyName(0, "");
-            //
+            // 
             // pnlDocumentPanel
-            //
+            // 
             this.pnlDocumentPanel.BackColor = System.Drawing.SystemColors.ControlDark;
             this.pnlDocumentPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlDocumentPanel.Controls.Add(this.tabMagicTab);
@@ -297,9 +305,9 @@ namespace PetriNetSimulator2
             this.pnlDocumentPanel.Name = "pnlDocumentPanel";
             this.pnlDocumentPanel.Size = new System.Drawing.Size(876, 450);
             this.pnlDocumentPanel.TabIndex = 5;
-            //
+            // 
             // ilMenu
-            //
+            // 
             this.ilMenu.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilMenu.ImageStream")));
             this.ilMenu.TransparentColor = System.Drawing.Color.Transparent;
             this.ilMenu.Images.SetKeyName(0, "");
@@ -318,9 +326,9 @@ namespace PetriNetSimulator2
             this.ilMenu.Images.SetKeyName(13, "");
             this.ilMenu.Images.SetKeyName(14, "");
             this.ilMenu.Images.SetKeyName(15, "python-o.png");
-            //
+            // 
             // aCloseFile
-            //
+            // 
             this.aCloseFile.Checked = false;
             this.aCloseFile.Enabled = true;
             this.aCloseFile.Hint = null;
@@ -328,9 +336,9 @@ namespace PetriNetSimulator2
             this.aCloseFile.Tag = null;
             this.aCloseFile.Text = null;
             this.aCloseFile.Visible = true;
-            //
+            // 
             // cmZoom
-            //
+            // 
             this.cmZoom.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.miZoom100,
             this.miZoom90,
@@ -339,94 +347,94 @@ namespace PetriNetSimulator2
             this.miZoom60,
             this.miZoom50});
             this.cmZoom.Popup += new System.EventHandler(this.cmZoom_Popup);
-            //
+            // 
             // miZoom100
-            //
+            // 
             this.miZoom100.Checked = true;
             this.miZoom100.Index = 0;
             this.miZoom100.RadioCheck = true;
             this.miZoom100.Text = "100%";
             this.miZoom100.Click += new System.EventHandler(this.miZoom_Click);
-            //
+            // 
             // miZoom90
-            //
+            // 
             this.miZoom90.Index = 1;
             this.miZoom90.RadioCheck = true;
             this.miZoom90.Text = "90%";
             this.miZoom90.Click += new System.EventHandler(this.miZoom_Click);
-            //
+            // 
             // miZoom80
-            //
+            // 
             this.miZoom80.Index = 2;
             this.miZoom80.RadioCheck = true;
             this.miZoom80.Text = "80%";
             this.miZoom80.Click += new System.EventHandler(this.miZoom_Click);
-            //
+            // 
             // miZoom70
-            //
+            // 
             this.miZoom70.Index = 3;
             this.miZoom70.RadioCheck = true;
             this.miZoom70.Text = "70%";
             this.miZoom70.Click += new System.EventHandler(this.miZoom_Click);
-            //
+            // 
             // miZoom60
-            //
+            // 
             this.miZoom60.Index = 4;
             this.miZoom60.RadioCheck = true;
             this.miZoom60.Text = "60%";
             this.miZoom60.Click += new System.EventHandler(this.miZoom_Click);
-            //
+            // 
             // miZoom50
-            //
+            // 
             this.miZoom50.Index = 5;
             this.miZoom50.RadioCheck = true;
             this.miZoom50.Text = "50%";
             this.miZoom50.Click += new System.EventHandler(this.miZoom_Click);
-            //
+            // 
             // sfdSaveFile
-            //
+            // 
             this.sfdSaveFile.DefaultExt = "pnd";
             this.sfdSaveFile.Filter = "Petri .NET Document (*.pnd)|*.pnd";
             this.sfdSaveFile.Title = "Save PetriNET to file.";
-            //
+            // 
             // sfdSaveXMLFile
-            //
+            // 
             this.sfdSaveXMLFile.DefaultExt = "pnml";
             this.sfdSaveXMLFile.Filter = "Petri .NET XML Document (*.pnml)|*.pnml";
             this.sfdSaveXMLFile.Title = "Save PetriNET to XML file.";
-            //
+            // 
             // sfdLoadXMLFile
-            //
+            // 
             this.sfdLoadXMLFile.DefaultExt = "pnml";
             this.sfdLoadXMLFile.Filter = "Petri .NET XML Document (*.pnml)|*.pnml";
             this.sfdLoadXMLFile.Title = "Load PetriNET from XML file.";
-            //
+            // 
             // sfdSaveMatrixFile
-            //
+            // 
             this.sfdSaveMatrixFile.DefaultExt = "m";
             this.sfdSaveMatrixFile.Filter = "Matlab file (*.m)|*.m";
             this.sfdSaveMatrixFile.Title = "Save PetriNET to M file.";
-            //
+            // 
             // sfdSaveCppFile
-            //
+            // 
             this.sfdSaveCppFile.DefaultExt = "cpp";
             this.sfdSaveCppFile.Filter = "C++ file (*.cpp)|*.cpp";
             this.sfdSaveCppFile.Title = "Save PetriNET to C/CPP file.";
-            //
+            // 
             // ofdOpenFile
-            //
+            // 
             this.ofdOpenFile.DefaultExt = "pnd";
             this.ofdOpenFile.Filter = "Petri .NET Document (*.pnd)|*.pnd";
             this.ofdOpenFile.Title = "Open PetriNET from file.";
-            //
+            // 
             // sfdExportFile
-            //
+            // 
             this.sfdExportFile.DefaultExt = "emf";
             this.sfdExportFile.Filter = "Enhanced metafile (*.emf)|*.emf";
             this.sfdExportFile.Title = "Export Petri .NET model.";
-            //
+            // 
             // MainWindow
-            //
+            // 
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(876, 471);
             this.Controls.Add(this.pnlDocumentPanel);
@@ -778,9 +786,58 @@ namespace PetriNetSimulator2
 
 			#endregion
 
-			#region Initialize this.mcView
+            #region Initialize this.mcSimulate
 
-			mcView = new Crownwood.Magic.Menus.MenuCommand("&View");
+            mcSimulate = new Crownwood.Magic.Menus.MenuCommand("&Simulate");
+
+            mcSimulateStart = new Crownwood.Magic.Menus.MenuCommand("Start");
+            mcSimulateStart.Click += new EventHandler(mcSimulateStart_Click);
+            mcSimulateStart.ImageList = ilToolBar;
+            mcSimulateStart.ImageIndex = 4;
+            mcSimulateStart.Shortcut = Shortcut.F5;
+            mcSimulateStart.Enabled = false;
+            mcSimulate.MenuCommands.Add(mcSimulateStart);
+
+            mcSimulateStartWithParam = new Crownwood.Magic.Menus.MenuCommand("Start with param");
+            mcSimulateStartWithParam.Click += new EventHandler(mcSimulateStartWithParam_Click);
+            mcSimulateStartWithParam.ImageList = null;
+            mcSimulateStartWithParam.ImageIndex = 0;
+            mcSimulateStartWithParam.Shortcut = Shortcut.CtrlF5;
+            mcSimulateStartWithParam.Enabled = false;
+            mcSimulate.MenuCommands.Add(mcSimulateStartWithParam);
+
+            mcSimulateStep = new Crownwood.Magic.Menus.MenuCommand("Step");
+            mcSimulateStep.Click += new EventHandler(mcSimulateStep_Click);
+            mcSimulateStep.ImageList = ilToolBar;
+            mcSimulateStep.ImageIndex = 7;
+            mcSimulateStep.Shortcut = Shortcut.F8;
+            mcSimulateStep.Enabled = false;
+            mcSimulate.MenuCommands.Add(mcSimulateStep);
+
+
+            mcSimulateStop = new Crownwood.Magic.Menus.MenuCommand("Stop");
+            mcSimulateStop.Click += new EventHandler(mcSimulateStop_Click);
+            mcSimulateStop.ImageList = ilToolBar;
+            mcSimulateStop.ImageIndex = 6;
+            mcSimulateStop.Shortcut = Shortcut.ShiftF5;
+            mcSimulateStop.Enabled = false;
+            mcSimulate.MenuCommands.Add(mcSimulateStop);
+
+            mcSimulateReset = new Crownwood.Magic.Menus.MenuCommand("Reset");
+            mcSimulateReset.Click += new EventHandler(mcSimulateReset_Click);
+            mcSimulateReset.ImageList = ilToolBar;
+            mcSimulateReset.ImageIndex = 3;
+            mcSimulateReset.Shortcut = Shortcut.CtrlShiftF5;
+            mcSimulateReset.Enabled = false;
+            mcSimulate.MenuCommands.Add(mcSimulateReset);
+
+
+            this.mcMenuControl.MenuCommands.Add(mcSimulate);
+            #endregion
+
+            #region Initialize this.mcView
+
+            mcView = new Crownwood.Magic.Menus.MenuCommand("&View");
 
 			foreach(Crownwood.Magic.Docking.Content c in this.dmDockingManager.Contents)
 			{
@@ -1158,8 +1215,8 @@ namespace PetriNetSimulator2
 			tabMagicTab.SelectedIndex = tabMagicTab.TabPages.Count - 1;
 			pnd.PerformActivation();
 
-                        tbbStart.Enabled = true;
-                        tbbStep.Enabled = true;
+            mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = true;
+            mcSimulateStep.Enabled = tbbStep.Enabled = true;
 		}
 		#endregion
 
@@ -1171,8 +1228,9 @@ namespace PetriNetSimulator2
 			if (DialogResult.OK == ofdOpenFile.ShowDialog())
 			{
 				this.OpenFile(ofdOpenFile.FileName);
-				tbbStart.Enabled = true;
-				tbbStep.Enabled = true;
+
+                mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = true;
+                mcSimulateStep.Enabled = tbbStep.Enabled = true;
 			}
 		}
 		#endregion
@@ -1298,8 +1356,8 @@ namespace PetriNetSimulator2
                             tabMagicTab.SelectedIndex = tabMagicTab.TabPages.Count - 1;
                             pnd.PerformActivation();
 
-                            tbbStart.Enabled = true;
-                            tbbStep.Enabled = true;
+                            mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = true;
+                            mcSimulateStep.Enabled = tbbStep.Enabled = true;
                         }
 #else
 #if (STUDENT)
@@ -1622,11 +1680,54 @@ namespace PetriNetSimulator2
 		}
 		#endregion
 
-		#endregion
 
 
-		#region private void cmZoom_Popup(object sender, System.EventArgs e)
-		private void cmZoom_Popup(object sender, System.EventArgs e)
+		private void mcSimulateStart_Click(object sender, System.EventArgs e)
+        {
+            ToolBarButtonClickEventArgs ee = new ToolBarButtonClickEventArgs (tbbStart);
+            this.sSimulator.sleepBetweenStep = 1000;
+            this.sSimulator.ignoreLackOfFireableTransition = false;
+            tbToolBar_ButtonClick(sender, ee);
+        }
+
+        private void mcSimulateStartWithParam_Click(object sender, System.EventArgs e)
+        {
+            if (this.SelectedDocument != null)
+            {
+                if (this.SelectedDocument.PetriNetType == PetriNetType.TimeInvariant)
+                { 
+                    SimulateParamForm spf = new SimulateParamForm(this.sSimulator);
+                    if (spf.ShowDialog() != DialogResult.OK)
+                        return;
+                }
+
+                ToolBarButtonClickEventArgs ee = new ToolBarButtonClickEventArgs(tbbStart);
+                tbToolBar_ButtonClick(sender, ee);
+            }
+        }
+
+        private void mcSimulateStep_Click(object sender, System.EventArgs e)
+        {
+            ToolBarButtonClickEventArgs ee = new ToolBarButtonClickEventArgs(tbbStep);
+            tbToolBar_ButtonClick(sender, ee);
+        }
+
+        private void mcSimulateStop_Click(object sender, System.EventArgs e)
+        {
+            ToolBarButtonClickEventArgs ee = new ToolBarButtonClickEventArgs(tbbStop);
+            tbToolBar_ButtonClick(sender, ee);
+        }
+
+        private void mcSimulateReset_Click(object sender, System.EventArgs e)
+        {
+            ToolBarButtonClickEventArgs ee = new ToolBarButtonClickEventArgs(tbbReset);
+            tbToolBar_ButtonClick(sender, ee);
+        }
+
+        #endregion
+
+        #region private void cmZoom_Popup(object sender, System.EventArgs e)
+        private void cmZoom_Popup(object sender, System.EventArgs e)
 		{
 			foreach(MenuItem mi in cmZoom.MenuItems)
 			{
@@ -1774,9 +1875,10 @@ namespace PetriNetSimulator2
 			{
 				this.sSimulator.Reset();
 				tbbReset.Enabled = false;
-				tbbStart.Enabled = true;
-				tbbStop.Enabled = false;
-				tbbStep.Enabled = true;
+
+                mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = true;
+				mcSimulateStop.Enabled = tbbStop.Enabled = false;
+                mcSimulateStep.Enabled = tbbStep.Enabled = true;
 
 				pbSimulationProgress.Hide();
 
@@ -1790,11 +1892,12 @@ namespace PetriNetSimulator2
 					this.SelectedDocument.Editor.PauseBeforeFiring = false;
 					this.sSimulator.Start();
 
-					tbbReset.Enabled = false;
-					tbbStart.Enabled = false;
+					mcSimulateReset.Enabled = tbbReset.Enabled = false;
+                    mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = false;
+
 					tbbPause.Enabled = true;
-					tbbStop.Enabled = true;
-					tbbStep.Enabled = false;
+                    mcSimulateStop.Enabled = tbbStop.Enabled = true;
+                    mcSimulateStep.Enabled = tbbStep.Enabled = false;
 
 					if (this.SelectedDocument.PetriNetType == PetriNetType.PTimed)
 						pbSimulationProgress.Show();
@@ -1804,20 +1907,22 @@ namespace PetriNetSimulator2
 			}
 			else if (e.Button == tbbPause)
 			{
-				tbbStart.Enabled = true;
+                mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = true;
 				tbbPause.Enabled = false;
-				tbbStep.Enabled = true;
+
+                mcSimulateStep.Enabled = tbbStep.Enabled = true;
 				this.sSimulator.Pause();
 			}
 			else if (e.Button == tbbStop)
 			{
 				this.sSimulator.Stop();
 
-				tbbStart.Enabled = true;
-				tbbStop.Enabled = false;
+                mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = true;
+
+                mcSimulateStop.Enabled = tbbStop.Enabled = false;
 				tbbPause.Enabled = false;
-				tbbReset.Enabled = false;
-				tbbStep.Enabled = true;
+                mcSimulateReset.Enabled = tbbReset.Enabled = false;
+                mcSimulateStep.Enabled = tbbStep.Enabled = true;
 
 				pbSimulationProgress.Hide();
 
@@ -1838,11 +1943,12 @@ namespace PetriNetSimulator2
 						this.SelectedDocument.Editor.PauseBeforeFiring = true;
 						this.sSimulator.Start();
 
-						tbbReset.Enabled = false;
-						tbbStart.Enabled = false;
+                        mcSimulateReset.Enabled = tbbReset.Enabled = false;
+
+                        mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = false;
 						tbbPause.Enabled = true;
-						tbbStop.Enabled = true;
-						tbbStep.Enabled = false;
+                        mcSimulateStop.Enabled = tbbStop.Enabled = true;
+                        mcSimulateStep.Enabled = tbbStep.Enabled = false;
 
 						pbSimulationProgress.Show();
 
@@ -1908,11 +2014,12 @@ namespace PetriNetSimulator2
 
 			if (this.Documents.Count == 0)
 			{
-				tbbStart.Enabled = false;
-				tbbStep.Enabled = false;
-				tbbReset.Enabled = false;
+                mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = false;
+                mcSimulateStep.Enabled = tbbStep.Enabled = false;
+
+                mcSimulateReset.Enabled = tbbReset.Enabled = false;
 				tbbPause.Enabled = false;
-				tbbStop.Enabled = false;
+                mcSimulateStop.Enabled = tbbStop.Enabled = false;
 			}
 
 			tbbFireable.Enabled = this.Documents.Count != 0;
@@ -2193,11 +2300,11 @@ namespace PetriNetSimulator2
 		private void sSimulator_SimulationFinished(object sender, EventArgs e)
 		{
 System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
-			tbbStart.Enabled = false;
+            mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = false;
 			tbbStop.Enabled = false;
 			tbbPause.Enabled = false;
 			tbbReset.Enabled = true;
-			tbbStep.Enabled = false;
+            mcSimulateStep.Enabled = tbbStep.Enabled = false;
 			MessageBox.Show(this, "End of simulation!", "Petri .NET Simulator 2.0 - Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = true;
 

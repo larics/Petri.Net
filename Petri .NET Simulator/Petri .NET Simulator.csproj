@@ -281,6 +281,12 @@
     <Compile Include="SelectableAndMoveableControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="SimulateParamForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimulateParamForm.Designer.cs">
+      <DependentUpon>SimulateParamForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Simulator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -404,6 +410,10 @@
     <EmbeddedResource Include="SelectableAndMoveableControl.resx">
       <DependentUpon>SelectableAndMoveableControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimulateParamForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SimulateParamForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="splash.png" />
     <EmbeddedResource Include="SubsystemEditor.resx">

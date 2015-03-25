@@ -45,6 +45,10 @@ namespace PetriNetSimulator2
 		public event EventHandler SimulationStepFinished;
 		public event EventHandler SimulationProcessFinished;
 
+
+        public int sleepBetweenStep = 1000;
+        public bool ignoreLackOfFireableTransition = false;
+
 		public Simulator(PetriNetDocument pnd)
 		{
 			this.pnd = pnd;
@@ -103,9 +107,11 @@ namespace PetriNetSimulator2
                     SaveDataForCharting(this.pnd.StepCounter);
 
 					// Find is there any transition that can fire
-                    if (this.pnd.FireableTransitions.Count != 0)
+
+                    if (this.pnd.FireableTransitions.Count != 0 || 
+                        this.ignoreLackOfFireableTransition)
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(this.sleepBetweenStep);    // 1000 by default.. 
                         Application.DoEvents();
                     }
                     else
