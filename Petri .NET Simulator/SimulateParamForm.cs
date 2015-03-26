@@ -33,7 +33,7 @@ namespace PetriNetSimulator2
                 tbPause.Focus();
                 return;
             }
-            simulator.sleepBetweenStep = v;
+            simulator.sleepBetweenStep = v > 5 ? v : 5;
             simulator.ignoreLackOfFireableTransition = !cbStopIfNoFireable.Checked;
             DialogResult = DialogResult.OK;
             Close();

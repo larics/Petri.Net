@@ -48,7 +48,7 @@ namespace PetriNetSimulator2
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(186, 100);
+            this.btnOK.Location = new System.Drawing.Point(167, 99);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 1;
@@ -59,7 +59,7 @@ namespace PetriNetSimulator2
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(267, 100);
+            this.btnCancel.Location = new System.Drawing.Point(248, 99);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
@@ -70,7 +70,7 @@ namespace PetriNetSimulator2
             // cbStopIfNoFireable
             // 
             this.cbStopIfNoFireable.AutoSize = true;
-            this.cbStopIfNoFireable.Location = new System.Drawing.Point(23, 56);
+            this.cbStopIfNoFireable.Location = new System.Drawing.Point(23, 64);
             this.cbStopIfNoFireable.Name = "cbStopIfNoFireable";
             this.cbStopIfNoFireable.Size = new System.Drawing.Size(255, 17);
             this.cbStopIfNoFireable.TabIndex = 2;
@@ -97,7 +97,7 @@ namespace PetriNetSimulator2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 134);
+            this.ClientSize = new System.Drawing.Size(335, 134);
             this.Controls.Add(this.tbPause);
             this.Controls.Add(this.cbStopIfNoFireable);
             this.Controls.Add(this.btnCancel);
