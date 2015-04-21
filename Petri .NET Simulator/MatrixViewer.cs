@@ -25,6 +25,9 @@ namespace PetriNetSimulator2
 		private int iRowWidth = 20;
 		private int iColumnOffset = 128;
 		private int iRowOffset = 60;
+        private ContextMenu cm = null;
+        private MenuItem mi = null;
+
 
 		private System.ComponentModel.Container components = null;
 
@@ -74,7 +77,19 @@ namespace PetriNetSimulator2
 			this.Name = "MatrixViewer";
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.MatrixViewer_Paint);
 
+            cm = new ContextMenu();
+            mi = new MenuItem("Copy matrix as text");
+            cm.MenuItems.Add(mi);
+            mi.Click += new EventHandler(mi_Click);
+            this.ContextMenu = cm;
 		}
+
+        void mi_Click(object sender, EventArgs e)
+        {
+            String cpc = mx.ToString();
+            cpc = cpc.Replace("]\n[", "]\r\n[");
+            System.Windows.Forms.Clipboard.SetText(cpc);
+        }
 		#endregion
 
 
