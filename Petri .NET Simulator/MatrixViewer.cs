@@ -28,6 +28,7 @@ namespace PetriNetSimulator2
         private ContextMenu cm = null;
         private MenuItem miCopyText = null;
         private MenuItem miCopyLatex = null;
+        private MenuItem miCopyMathML = null;
 
 
 		private System.ComponentModel.Container components = null;
@@ -81,10 +82,15 @@ namespace PetriNetSimulator2
             cm = new ContextMenu();
             miCopyText = new MenuItem("Copy matrix as text");
             miCopyLatex = new MenuItem("Copy matrix as LaTex");
+            miCopyMathML = new MenuItem("Copy matrix as MathML");
+
             cm.MenuItems.Add(miCopyText);
             cm.MenuItems.Add(miCopyLatex);
+            cm.MenuItems.Add(miCopyMathML);
+
             miCopyText.Click += new EventHandler(miCopyText_Click);
             miCopyLatex.Click += new EventHandler(miCopyLatex_Click);
+            miCopyMathML.Click += new EventHandler(miCopyMathML_Click);
             this.ContextMenu = cm;
 		}
 
@@ -105,6 +111,28 @@ namespace PetriNetSimulator2
             cpc = cpc.Replace(" ]\n[ ", @"\\").Trim();
             cpc = cpc.Replace(" ", " & ");
             cpc = @"\begin{bmatrix} " + cpc + @"\end{bmatrix}";
+            System.Windows.Forms.Clipboard.SetText(cpc);
+        }
+
+        void miCopyMathML_Click(object sender, EventArgs e)
+        {
+
+            String cpc = mx.ToString();
+            cpc = cpc.Substring(1);
+            cpc = cpc.Substring(0, cpc.Length - 2);
+            cpc = "<mtr>\n<mtd><mn>" + cpc.Trim();
+            cpc = cpc.Replace(" ]\n[ ", "</mn></mtd>\n</mtr>\n<mtr>\n<mtd><mn>").Trim();
+            cpc = cpc.Replace(" ", "</mn></mtd>\n<mtd><mn>");
+            cpc += "</mn></mtd></mtr>";
+
+            string hdr = "<?xml version=\"1.0\"?>";
+            hdr += "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">";
+            hdr += "<mfenced open=\"[\" close=\"]\" ><mtable>";
+
+            string ftr = "</mtable></mfenced></math>";
+
+
+            cpc = hdr + cpc + ftr;
             System.Windows.Forms.Clipboard.SetText(cpc);
         }
 
