@@ -26,7 +26,8 @@ namespace PetriNetSimulator2
 		private int iColumnOffset = 128;
 		private int iRowOffset = 60;
         private ContextMenu cm = null;
-        private MenuItem mi = null;
+        private MenuItem miCopyText = null;
+        private MenuItem miCopyLatex = null;
 
 
 		private System.ComponentModel.Container components = null;
@@ -78,18 +79,36 @@ namespace PetriNetSimulator2
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.MatrixViewer_Paint);
 
             cm = new ContextMenu();
-            mi = new MenuItem("Copy matrix as text");
-            cm.MenuItems.Add(mi);
-            mi.Click += new EventHandler(mi_Click);
+            miCopyText = new MenuItem("Copy matrix as text");
+            miCopyLatex = new MenuItem("Copy matrix as LaTex");
+            cm.MenuItems.Add(miCopyText);
+            cm.MenuItems.Add(miCopyLatex);
+            miCopyText.Click += new EventHandler(miCopyText_Click);
+            miCopyLatex.Click += new EventHandler(miCopyLatex_Click);
             this.ContextMenu = cm;
 		}
 
-        void mi_Click(object sender, EventArgs e)
+        void miCopyText_Click(object sender, EventArgs e)
         {
             String cpc = mx.ToString();
             cpc = cpc.Replace("]\n[", "]\r\n[");
             System.Windows.Forms.Clipboard.SetText(cpc);
         }
+
+        void miCopyLatex_Click(object sender, EventArgs e)
+        {
+            // "\begin{bmatrix} a & b \\ a & b \\ c & d \end{bmatrix}";
+
+            String cpc = mx.ToString();
+            cpc = cpc.Substring(1);
+            cpc = cpc.Substring(0, cpc.Length-2);
+            cpc = cpc.Replace(" ]\n[ ", @"\\").Trim();
+            cpc = cpc.Replace(" ", " & ");
+            cpc = @"\begin{bmatrix} " + cpc + @"\end{bmatrix}";
+            System.Windows.Forms.Clipboard.SetText(cpc);
+        }
+
+
 		#endregion
 
 
