@@ -817,11 +817,20 @@ namespace PetriNetSimulator2
             {
                 try
                 {
+                    List<string> names = new List<string>();
+                    List<int> states = new List<int>();
+
                     foreach (Place p in pnd.Places)
                     {
                         string varname = p.GetShortString();
                         pyScope.SetVariable(varname, p.Tokens);
+
+                        names.Add(varname);
+                        states.Add(p.Tokens);
                     }
+
+                    pyScope.SetVariable("names_vector", names);
+                    pyScope.SetVariable("states_vector", states);
 
                     //int td = this.pnd.Td;
                     //pyScope.SetVariable("td", td);
