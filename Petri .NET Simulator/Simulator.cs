@@ -819,6 +819,7 @@ namespace PetriNetSimulator2
                 {
                     List<string> names = new List<string>();
                     List<int> states = new List<int>();
+                    List<string> types = new List<string>();
 
                     foreach (Place p in pnd.Places)
                     {
@@ -827,10 +828,26 @@ namespace PetriNetSimulator2
 
                         names.Add(varname);
                         states.Add(p.Tokens);
+
+                        if(p is PlaceInput)
+                            types.Add("Input");
+                        else if(p is PlaceOperation)
+                            types.Add("Operation");
+                        else if (p is PlaceResource)
+                            types.Add("Resource");
+                        else if (p is PlaceOutput)
+                            types.Add("Output");
+                        else if (p is PlaceControl)
+                            types.Add("Control");
+                        else if (p is PlaceConverter)
+                            types.Add("Converter");
+                        else
+                            types.Add("?");
                     }
 
                     pyScope.SetVariable("names_vector", names);
                     pyScope.SetVariable("states_vector", states);
+                    pyScope.SetVariable("types_vector", types);
 
                     //int td = this.pnd.Td;
                     //pyScope.SetVariable("td", td);
