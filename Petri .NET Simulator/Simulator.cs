@@ -9,6 +9,7 @@ using IronPython.Runtime;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using System.Collections.Generic;
+using PetriNetSimulator2.Scripts;
 
 
 namespace PetriNetSimulator2
@@ -36,9 +37,7 @@ namespace PetriNetSimulator2
 		private bool bRunning = false;
 		private Hashtable ht = new Hashtable(); // Used for saving token data
 
-        private ScriptEngine pyEngine = null;
-        private ScriptScope pyScope = null;
-
+        IScripter script = null;
 
 		//Events
 		public event EventHandler SimulationFinished;
@@ -81,7 +80,7 @@ namespace PetriNetSimulator2
                     // Released managed Resources
                     try
                     {
-                        ResetPython(true);
+                        script.ResetScript(true);
                     }
                     catch
                     {
@@ -240,7 +239,7 @@ namespace PetriNetSimulator2
 					#region Set control vector
 					// Set control vector
 
-                    bool isPhytonExecutedOK = PythonSingleStep();
+                    bool isPhytonExecutedOK = script.ScriptSingleStep();
                     Tv0 = this.pnd.Tv0; // Refresh duration information.. 
 
 					if (alControlPlaces.Count != 0)
@@ -697,186 +696,6 @@ namespace PetriNetSimulator2
 
 		#region public void Start()
 
-        public void Python_OnWrite(string s) 
-        {
-            // pnd.pyOutput.Print(s);
-            // pnd.pyOutput.PrintMT(s);
-            Python_OnWriteWithColor(s, System.Drawing.Color.Blue);
-        }
-
-        public void Python_OnWriteErr(string s)
-        {
-            // pnd.pyOutput.Print(s);
-            //pnd.pyOutput.PrintMT(s);
-            Python_OnWriteWithColor(s, System.Drawing.Color.Red);
-        }
-
-
-        private void Python_OnWriteWithColor(string s, System.Drawing.Color c)
-        {
-            // pnd.pyOutput.PrintMT(s);
-            pnd.pyOutput.PrintMTColor(s, c);
-        }
-
-
-        public object Python_FindPlace(string nameID)
-        {
-            foreach (Place p in pnd.Places)
-            {
-                if ( 
-                    (!String.IsNullOrEmpty(p.NameID) && p.NameID.Equals(nameID) ) || 
-                    (!String.IsNullOrEmpty(p.Name) && p.Name.Equals(nameID) )
-                   )
-                    return p;
-            }
-            return null;
-        }
-
-
-        public Boolean InitPython()
-        {
-            Cursor.Current = Cursors.WaitCursor;
-
-            if (pnd.pyCode.Length > 0)
-            {
-                try
-                {
-                    pyEngine = Python.CreateEngine();
-                    pyScope = pyEngine.CreateScope();
-
-                    //string version = "IronPython "+pyEngine.LanguageVersion.ToString()+"\n\r";
-                    //Python_OnWriteWithColor(version, System.Drawing.Color.Green);
-
-                    // Setting the output streams
-                    pyEngine.CreateScriptSourceFromString(pnd.pyCode, SourceCodeKind.Statements).Compile().Execute(pyScope);
-
-                    pyScope.SetVariable("mysimulator", this);
-                    string code = "import sys\n" +
-                                  "class StdoutCatcher:\n" +
-                                  "    def write(self, str):\n" +
-                                  "        global mysimulator\n" +
-                                  "        mysimulator.Python_OnWrite(str)\n" +
-                                  "class StderrCatcher:\n" +
-                                  "    def write(self, str):\n" +
-                                  "        global mysimulator\n" +
-                                  "        mysimulator.Python_OnWriteErr(str)\n" +
-                                  "sys.stdout = StdoutCatcher()\n" +
-                                  "sys.stderr = StderrCatcher()\n" +
-                                  "def FindPlace(str):\n" +
-                                  "    global mysimulator\n" +
-                                  "    return mysimulator.Python_FindPlace(str)\n";
-
-                    pyEngine.CreateScriptSourceFromString(code, SourceCodeKind.Statements).Compile().Execute(pyScope);
-                    pnd.pyEditor.Disable();
-                    pnd.pyOutput.Clear();
-                    Cursor.Current = Cursors.Default;
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    this.Python_OnWriteWithColor("Error starting Python module\n", System.Drawing.Color.Red);
-                    this.Python_OnWriteWithColor(e.Message + "\n", System.Drawing.Color.Red);
-                    pyEngine = null;
-                    pyScope = null;
-                }
-            }
-            Cursor.Current = Cursors.Default;
-            return false;
-        }
-
-        public void ResetPython(bool be_quiet)
-        {
-            if (pyEngine != null)
-            {
-                try
-                {
-                    pyEngine.CreateScriptSourceFromString("Reset()", SourceCodeKind.Statements).Compile().Execute(pyScope);
-                    Thread.Sleep(1000);
-                    Application.DoEvents();
-                }
-                catch (Exception e)
-                {
-                    if (!be_quiet)
-                        this.Python_OnWriteWithColor(e.Message + "\n", System.Drawing.Color.Red);
-                }
-                pyEngine = null;
-            }
-
-            if (pyScope != null)
-                pyScope = null;
-
-            pnd.pyEditor.Enable();
-        }
-
-        public Boolean PythonSingleStep()
-        {
-            if (pyEngine == null || pyScope == null)
-                InitPython();
-
-            if (pyEngine != null && pyScope != null)
-            {
-                try
-                {
-                    List<string> names = new List<string>();
-                    List<int> states = new List<int>();
-                    List<string> types = new List<string>();
-
-                    foreach (Place p in pnd.Places)
-                    {
-                        string varname = p.GetShortString();
-                        pyScope.SetVariable(varname, p.Tokens);
-
-                        names.Add(varname);
-                        states.Add(p.Tokens);
-
-                        if(p is PlaceInput)
-                            types.Add("Input");
-                        else if(p is PlaceOperation)
-                            types.Add("Operation");
-                        else if (p is PlaceResource)
-                            types.Add("Resource");
-                        else if (p is PlaceOutput)
-                            types.Add("Output");
-                        else if (p is PlaceControl)
-                            types.Add("Control");
-                        else if (p is PlaceConverter)
-                            types.Add("Converter");
-                        else
-                            types.Add("?");
-                    }
-
-                    pyScope.SetVariable("names_vector", names);
-                    pyScope.SetVariable("states_vector", states);
-                    pyScope.SetVariable("types_vector", types);
-
-                    //int td = this.pnd.Td;
-                    //pyScope.SetVariable("td", td);
-
-                    string timeinfo;
-                    int tmp = this.pnd.StepCounter;
-                    if (this.pnd.PetriNetType == PetriNetType.PTimed)
-                        tmp *= this.pnd.Td;
-
-                    timeinfo = tmp.ToString();
-                    pyEngine.CreateScriptSourceFromString("Step("+timeinfo+")", SourceCodeKind.Statements).Compile().Execute(pyScope);
-
-                    foreach (Place p in pnd.Places)
-                    {
-                        string varname = p.GetShortString();
-                        p.Tokens = (int)pyScope.GetVariable(varname);
-                    }
-                    return true;
-
-                }
-                catch (Exception ex)
-                {
-                    this.Python_OnWriteWithColor(ex.Message + "\n", System.Drawing.Color.Red);
-                }
-            }
-            return false;
-        }
-
-
 		public void Start()
 		{
 			if (bRunning == false)
@@ -884,7 +703,14 @@ namespace PetriNetSimulator2
 				// Backup all tokens data that can later be used to restore inital setting
 				SaveTokensData();
                 this.pnd.StepCounter = 0;
-                InitPython();
+
+                if (pnd.pyCode.StartsWith("//C#"))
+                    script = new CSharpScript(pnd);
+                else
+                    script = new PythonScript(pnd);
+
+                script.InitScript();
+
 				// Start simulation thread
 				this.tdSimulate = new Thread(new ThreadStart(Simulate));
 				tdSimulate.Start();
@@ -947,7 +773,7 @@ namespace PetriNetSimulator2
 			if (this.SimulationStepFinished != null)
 				this.SimulationStepFinished(this, new EventArgs());
 
-            ResetPython(false);
+            script.ResetScript(false);
 		}
 		#endregion
 
@@ -966,10 +792,10 @@ namespace PetriNetSimulator2
 
 			if (this.pnd.PetriNetType == PetriNetType.TimeInvariant)
 			{
-                if (PythonSingleStep())
+                if (script.ScriptSingleStep())
                 {
                     // Do nothing.. 
-                    // We expect that Python code take care of contol places
+                    // We expect that script code take care of contol places
                 }
                 else
                 {

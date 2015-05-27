@@ -278,6 +278,10 @@
     <Compile Include="RulesEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Scripts\BaseScript.cs" />
+    <Compile Include="Scripts\CSharpScript.cs" />
+    <Compile Include="Scripts\IScripter.cs" />
+    <Compile Include="Scripts\PythonScript.cs" />
     <Compile Include="SelectableAndMoveableControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
