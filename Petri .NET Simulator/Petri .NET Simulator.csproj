@@ -78,6 +78,10 @@
       <Name>cdiese</Name>
       <HintPath>..\Libs\CDiese.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.TextEditor, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
     <Reference Include="IronPython, Version=2.6.10920.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\IronPython\IronPython.dll</HintPath>

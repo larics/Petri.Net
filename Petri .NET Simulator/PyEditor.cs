@@ -47,12 +47,12 @@ namespace PetriNetSimulator2
 
         public void Enable()
         {
-            pyCode.ReadOnly = false;
+            pyCode.IsReadOnly = false;
         }
 
         public void Disable()
         {
-            pyCode.ReadOnly = true;
+            pyCode.IsReadOnly = true;
         }
     }
 }

@@ -28,20 +28,17 @@ namespace PetriNetSimulator2
         /// </summary>
         private void InitializeComponent()
         {
-            this.pyCode = new System.Windows.Forms.TextBox();
+            this.pyCode = new ICSharpCode.TextEditor.TextEditorControl();
             this.SuspendLayout();
             // 
             // pyCode
             // 
-            this.pyCode.AcceptsTab = true;
             this.pyCode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pyCode.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.pyCode.Location = new System.Drawing.Point(0, 0);
-            this.pyCode.Multiline = true;
             this.pyCode.Name = "pyCode";
             this.pyCode.Size = new System.Drawing.Size(738, 236);
             this.pyCode.TabIndex = 2;
-            this.pyCode.WordWrap = false;
             this.pyCode.TextChanged += new System.EventHandler(this.pyCode_TextChanged);
             // 
             // PyEditor
@@ -58,6 +55,6 @@ namespace PetriNetSimulator2
 
         #endregion
 
-        private System.Windows.Forms.TextBox pyCode;
+        private ICSharpCode.TextEditor.TextEditorControl pyCode;
     }
 }
