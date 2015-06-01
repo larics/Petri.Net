@@ -8,6 +8,13 @@ namespace PetriNetSimulator2.Scripts
     {
         protected PetriNetDocument pnd;
 
+        public List<string> names = new List<string>();
+        public List<int> states = new List<int>();
+        public List<string> types = new List<string>();
+        
+        public List<int> tstates = new List<int>();
+        public List<string> tnames = new List<string>();
+
         public BaseScript(PetriNetDocument p)
         {
             pnd = p;
@@ -44,6 +51,45 @@ namespace PetriNetSimulator2.Scripts
         }
 
         #endregion
+
+        public void RecalculateVectors()
+        {
+            names = new List<string>();
+            states = new List<int>();
+            types = new List<string>();
+
+            tnames = new List<string>();
+            tstates = new List<int>();
+
+            foreach (Place p in pnd.Places)
+            {
+                string varname = p.GetShortString();
+
+                names.Add(varname);
+                states.Add(p.Tokens);
+
+                if (p is PlaceInput)
+                    types.Add("Input");
+                else if (p is PlaceOperation)
+                    types.Add("Operation");
+                else if (p is PlaceResource)
+                    types.Add("Resource");
+                else if (p is PlaceOutput)
+                    types.Add("Output");
+                else if (p is PlaceControl)
+                    types.Add("Control");
+                else if (p is PlaceConverter)
+                    types.Add("Converter");
+                else
+                    types.Add("?");
+            }
+
+            foreach(Transition t in pnd.Transitions)
+            {
+                tstates.Add(pnd.FireableTransitions.Contains(t) ? 1 : 0);
+                tnames.Add(t.GetShortString());
+            }
+        }
 
 
     }

@@ -17,13 +17,6 @@ namespace PetriNetSimulator2.Scripts
         private string _expressionError = "";
 
 
-        public List<string> names = new List<string>();
-        public List<int> states = new List<int>();
-        public List<string> types = new List<string>();
-
-
-
-
         public CSharpScript(PetriNetDocument p)
             : base(p)
         { 
@@ -124,32 +117,7 @@ namespace PetriNetSimulator2.Scripts
             {
                 try
                 {
-                    names = new List<string>();
-                    states = new List<int>();
-                    types = new List<string>();
-
-                    foreach (Place p in pnd.Places)
-                    {
-                        string varname = p.GetShortString();
-
-                        names.Add(varname);
-                        states.Add(p.Tokens);
-
-                        if (p is PlaceInput)
-                            types.Add("Input");
-                        else if (p is PlaceOperation)
-                            types.Add("Operation");
-                        else if (p is PlaceResource)
-                            types.Add("Resource");
-                        else if (p is PlaceOutput)
-                            types.Add("Output");
-                        else if (p is PlaceControl)
-                            types.Add("Control");
-                        else if (p is PlaceConverter)
-                            types.Add("Converter");
-                        else
-                            types.Add("?");
-                    }
+                    this.RecalculateVectors();
 
                     //int td = this.pnd.Td;
                     //pyScope.SetVariable("td", td);
@@ -212,7 +180,10 @@ namespace PetriNetSimulator2.Scripts
                                             public List<int> states_vector   { get {return _script.states; } }
                                             public List<string> types_vector { get {return _script.types; } }
 
-                                        }  
+
+                                            public List<string> tnames_vector { get {return _script.tnames; } }
+                                            public List<int> tstates_vector   { get {return _script.tstates; } }
+}  
                                      }";
 
     }
