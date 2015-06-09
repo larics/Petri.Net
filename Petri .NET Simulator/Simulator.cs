@@ -634,8 +634,7 @@ namespace PetriNetSimulator2
 					{
 						((Place)this.pnd.GroupedPlaces[j]).Tokens = imk[j, 0];
 					}
-                    this.pnd.StepCounter++;
-                    SaveDataForCharting(this.pnd.StepCounter);
+                    SaveDataForCharting(this.pnd.StepCounter + 1);
                 }
 
 				this.bRunning = false;
