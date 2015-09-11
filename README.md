@@ -1,7 +1,7 @@
 Petri.NET
 =========
 
-A Petri Net simulator.
+A Petri Net simulator with a Python (and C#) scripting capability
 
 This software use following additional libraries:
 
