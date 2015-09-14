@@ -37,6 +37,11 @@ namespace PetriNetSimulator2
         {
             InitializeComponent();
             this.pyCode.Enabled = false;
+
+            //ICSharpCode.TextEditor.Document.HighlightingManager.Manager.AddSyntaxModeFileProvider( new PetriNetSimulator2.Syntax.SyntaxModeFileProvider() ); // Attach to the text editor.
+            //this.pyCode.SetHighlighting("C#"); // Activate the highlighting, use the name from the SyntaxDefinition node.
+            //this.pyCode.SetHighlighting("Python"); // Activate the highlighting, use the name from the SyntaxDefinition node.
+
         }
 
         private void pyCode_TextChanged(object sender, EventArgs e)

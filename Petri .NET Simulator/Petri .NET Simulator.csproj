@@ -307,6 +307,7 @@
     <Compile Include="SubsystemEditor.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Syntax\SyntaxModeFileProvider.cs" />
     <Compile Include="TextPropertyEditor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -446,6 +447,11 @@
       <Link>TreeViewHelper.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="Syntax\Python.xshd" />
+    <EmbeddedResource Include="Syntax\CSharp.xshd" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syntax\SyntaxModes.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
