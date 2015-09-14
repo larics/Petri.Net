@@ -1593,39 +1593,80 @@ namespace PetriNetSimulator2
 		#region private void mcHelpCheckForUpdates_Click(object sender, System.EventArgs e)
 		private void mcHelpCheckForUpdates_Click(object sender, System.EventArgs e)
 		{
-			try
+            if (isInternetAvailable())
+            {
+                string sVersion = String.Empty;
+                bool bIsNewAvailable = isNewVersionAvailable(ref sVersion);
+                if (!bIsNewAvailable)
+                    MessageBox.Show("You already have the latest version of Petri .NET Simulator!\nUpdate is not needed!", "Petri .NET Simulator 2.0 Information - Version up-to-date", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else
+                {
+                    if (DialogResult.Yes == MessageBox.Show("There is new version available: " + sVersion + "  !\nDo you wish to go to Petri .NET Simulator web page and check for it ?", "Petri .NET Simulator 2.0 Information - new version available", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
+                        API.ShellExecute(IntPtr.Zero, "Open", "https://github.com/larics/Petri.Net/releases", null, null, 3);
+                }
+			}
+            else
 			{
-				this.Cursor = Cursors.WaitCursor;
+				MessageBox.Show("There was an error trying to connect to the Internet!\nPlease connect to the Internet!", "Petri .NET Simulator 2.0 Error - No Internet connection", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+
+        private bool isInternetAvailable()
+        {
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    client.UseDefaultCredentials = true;
+                    client.Proxy = WebRequest.GetSystemWebProxy();
+                    client.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
+
+                    using (Stream stream = client.OpenRead("http://github.com"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool isNewVersionAvailable(ref string sVersion)
+        {
+            bool bIsNewAvailable = false;
+            sVersion = String.Empty; ;
+
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
 
                 Version version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
                 DateTime buildDateTime = new DateTime(2000, 1, 1).Add(new TimeSpan(
                                                         TimeSpan.TicksPerDay * version.Build + // days since 1 January 2000
                                                         TimeSpan.TicksPerSecond * 2 * version.Revision));
 
-
-
-				// Initialize the WebRequest.
+                // Initialize the WebRequest.
                 WebRequest myRequest = WebRequest.Create("https://github.com/larics/Petri.Net/releases");
-                
+
                 WebProxy proxyObject = WebProxy.GetDefaultProxy();
                 proxyObject.Credentials = System.Net.CredentialCache.DefaultCredentials;
                 myRequest.Proxy = proxyObject;
 
-				// Return the response.
-				WebResponse myResponse = myRequest.GetResponse();
+                // Return the response.
+                WebResponse myResponse = myRequest.GetResponse();
 
-				// Code to use the WebResponse goes here.
-				Stream sContents = myResponse.GetResponseStream();
-				StreamReader reader = new StreamReader(sContents);
-				String sHtmlCode = reader.ReadToEnd();
+                // Code to use the WebResponse goes here.
+                Stream sContents = myResponse.GetResponseStream();
+                StreamReader reader = new StreamReader(sContents);
+                String sHtmlCode = reader.ReadToEnd();
 
-				// Close the response to free resources.
-				myResponse.Close();
-                bool bIsNewAvailable = false;
-
+                // Close the response to free resources.
+                myResponse.Close();
                 try
                 {
-                    string sVersion = String.Empty; ;
                     // Find (Version:XXXXXXXXXXXXX)
                     string pattern = @"\(Version:([^)]*)\)";
                     Regex regex = new Regex(pattern);
@@ -1650,26 +1691,23 @@ namespace PetriNetSimulator2
                             else if (int.Parse(sLatestVersion[2]) == int.Parse(sCurrentVersion[2]))
                                 if (int.Parse(sLatestVersion[3]) > int.Parse(sCurrentVersion[3]))
                                     bIsNewAvailable = true;
-
-                    if (!bIsNewAvailable)
-                        MessageBox.Show("You already have the latest version of Petri .NET Simulator!\nUpdate is not needed!", "Petri .NET Simulator 2.0 Information - Version up-to-date", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    else
-                    {
-                        if (DialogResult.Yes == MessageBox.Show("There is new version available: " + sVersion + "  !\nDo you wish to go to Petri .NET Simulator web page and check for it ?", "Petri .NET Simulator 2.0 Information - new version available", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
-                            API.ShellExecute(IntPtr.Zero, "Open", "https://github.com/larics/Petri.Net/releases", null, null, 3);
-                    }
                 }
                 catch (Exception ex)
-                { 
+                {
+                    bIsNewAvailable = false;
                 }
-				this.Cursor = Cursors.Default;
-			}
-			catch(WebException)
-			{
-				this.Cursor = Cursors.Default;
-				MessageBox.Show("There was an error trying to connect to the Internet!\nPlease connect to the Internet!", "Petri .NET Simulator 2.0 Error - No Internet connection", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
+            }
+            catch (WebException)
+            {
+                bIsNewAvailable = false;
+                this.Cursor = Cursors.Default;
+                MessageBox.Show("There was an error trying to connect to the Internet!\nPlease connect to the Internet!", "Petri .NET Simulator 2.0 Error - No Internet connection", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            this.Cursor = Cursors.Default;
+            return bIsNewAvailable;
+        }
+
+
 		#endregion
 
 		#region private void mcHelpAbout_Click(object sender, System.EventArgs e)
