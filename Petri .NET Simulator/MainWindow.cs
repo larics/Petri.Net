@@ -523,14 +523,14 @@ namespace PetriNetSimulator2
 			wc = dmDockingManager.AddContentWithState(ruleseditor, Crownwood.Magic.Docking.State.DockBottom);
 
 			// PY
-            Crownwood.Magic.Docking.Content pythoneditor = dmDockingManager.Contents.Add(this.rePythonEditor, "Python code editor", this.ilMenu, 14);
+            Crownwood.Magic.Docking.Content pythoneditor = dmDockingManager.Contents.Add(this.rePythonEditor, "Python (or C#) code editor", this.ilMenu, 14);
             pythoneditor.AutoHideSize = new Size(200, 180);
             pythoneditor.DisplaySize = new Size(200, 180);
             pythoneditor.FloatingSize = new Size(200, 180);
             dmDockingManager.AddContentWithState(pythoneditor, Crownwood.Magic.Docking.State.DockBottom);
 
 
-            Crownwood.Magic.Docking.Content pythoneoutput = dmDockingManager.Contents.Add(this.rePythonOutput, "Python output", this.ilMenu, 15);
+            Crownwood.Magic.Docking.Content pythoneoutput = dmDockingManager.Contents.Add(this.rePythonOutput, "Python (or C#) output", this.ilMenu, 15);
             pythoneoutput.AutoHideSize = new Size(200, 180);
             pythoneoutput.DisplaySize = new Size(200, 180);
             pythoneoutput.FloatingSize = new Size(200, 180);
