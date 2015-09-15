@@ -1197,7 +1197,7 @@ namespace PetriNetSimulator2
 				this.tabMagicTab.Visible = true;
 			}
 
-			PetriNetDocument pnd = new PetriNetDocument("Untitled" + this.iNextUntitledDocumentIndex.ToString());
+			PetriNetDocument pnd = new PetriNetDocument(this, "Untitled" + this.iNextUntitledDocumentIndex.ToString());
 			pnd.PropertiesChanged += new EventHandler(pnd_PropertiesChanged);
 			pnd.ContentsChanged += new EventHandler(pnd_ContentsChanged);
 			pnd.SelectedObjectsChanged += new EventHandler(pnd_SelectedObjectsChanged);
@@ -1247,7 +1247,7 @@ namespace PetriNetSimulator2
 				this.tabMagicTab.Visible = true;
 			}
 
-			PetriNetDocument pnd = new PetriNetDocument("Untitled" + this.iNextUntitledDocumentIndex.ToString());
+			PetriNetDocument pnd = new PetriNetDocument(this, "Untitled" + this.iNextUntitledDocumentIndex.ToString());
 			pnd.PropertiesChanged += new EventHandler(pnd_PropertiesChanged);
 			pnd.ContentsChanged += new EventHandler(pnd_ContentsChanged);
 			pnd.SelectedObjectsChanged += new EventHandler(pnd_SelectedObjectsChanged);
@@ -1336,7 +1336,7 @@ namespace PetriNetSimulator2
                                 this.tabMagicTab.Visible = true;
                             }
 
-                            PetriNetDocument pnd = new PetriNetDocument("Untitled" + this.iNextUntitledDocumentIndex.ToString());
+                            PetriNetDocument pnd = new PetriNetDocument(this, "Untitled" + this.iNextUntitledDocumentIndex.ToString());
                             pnd.PropertiesChanged += new EventHandler(pnd_PropertiesChanged);
                             pnd.ContentsChanged += new EventHandler(pnd_ContentsChanged);
                             pnd.SelectedObjectsChanged += new EventHandler(pnd_SelectedObjectsChanged);
@@ -2542,5 +2542,11 @@ System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = true;
 #endif
 		#endregion
 
+
+        public void SetScriptName(string sn)
+        {
+            this.pythoneditor.FullTitle = sn + " editor";    //
+            this.pythoneoutput.FullTitle = sn + " output";
+        }
 	}
 }

@@ -24,6 +24,7 @@ namespace PetriNetSimulator2
                 {
                     this.pyCode.Text = pndSelectedDocument.pyCode;
                     this.pyCode.Enabled = true;
+                    this.pyCode.Refresh();
                 }
                 else
                     this.pyCode.Enabled = false;
@@ -52,12 +53,16 @@ namespace PetriNetSimulator2
             {
                 isPython = false;
                 this.pyCode.SetHighlighting("C#");
+                pndSelectedDocument.SetScriptName("C#");
             }
             else if (!isPython && !this.pyCode.Text.StartsWith("//C#"))
             {
                 isPython = true;
                 this.pyCode.SetHighlighting("Python");
+                pndSelectedDocument.SetScriptName("Python");
             }
+            else if(this.pyCode.Text.Length == 0)
+                pndSelectedDocument.SetScriptName("Python");
         }
 
         public void Enable()

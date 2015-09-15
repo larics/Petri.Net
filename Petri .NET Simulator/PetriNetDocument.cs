@@ -1090,14 +1090,15 @@ namespace PetriNetSimulator2
 		private System.Windows.Forms.ContextMenu cmExport;
 		private System.Windows.Forms.MenuItem cmmiExportSpreadsheet;
 		private System.ComponentModel.IContainer components;
-
+        private MainWindow parent = null;
 
 		#region public PetriNetDocument(string sFileName)
-		public PetriNetDocument(string sFileName)
+		public PetriNetDocument(MainWindow p, string sFileName)
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
 
+            this.parent = p;
 			this.sFileName = sFileName;
 
 			Panel pnlEditorContainer = new Panel();
@@ -1873,7 +1874,10 @@ namespace PetriNetSimulator2
             return line;
         }
 
-
+        public void SetScriptName(string sn)
+        {
+            parent.SetScriptName(sn);
+        }
 
 
         #region public void SaveFile(string sFileName)
