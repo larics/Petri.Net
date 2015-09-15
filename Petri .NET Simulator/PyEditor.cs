@@ -32,22 +32,32 @@ namespace PetriNetSimulator2
 		#endregion
 
         private PetriNetDocument pndSelectedDocument = null;
+        private bool isPython = true;
 
         public PyEditor()
         {
             InitializeComponent();
             this.pyCode.Enabled = false;
 
-            //ICSharpCode.TextEditor.Document.HighlightingManager.Manager.AddSyntaxModeFileProvider( new PetriNetSimulator2.Syntax.SyntaxModeFileProvider() ); // Attach to the text editor.
-            //this.pyCode.SetHighlighting("C#"); // Activate the highlighting, use the name from the SyntaxDefinition node.
-            //this.pyCode.SetHighlighting("Python"); // Activate the highlighting, use the name from the SyntaxDefinition node.
-
+            ICSharpCode.TextEditor.Document.HighlightingManager.Manager.AddSyntaxModeFileProvider( new PetriNetSimulator2.Syntax.SyntaxModeFileProvider() ); // Attach to the text editor.
+            this.pyCode.SetHighlighting("Python"); // Activate the highlighting, use the name from the SyntaxDefinition node.
         }
 
         private void pyCode_TextChanged(object sender, EventArgs e)
         {
             if (pndSelectedDocument != null)
                 pndSelectedDocument.pyCode = this.pyCode.Text;
+
+            if (isPython && this.pyCode.Text.StartsWith("//C#"))
+            {
+                isPython = false;
+                this.pyCode.SetHighlighting("C#");
+            }
+            else if (!isPython && !this.pyCode.Text.StartsWith("//C#"))
+            {
+                isPython = true;
+                this.pyCode.SetHighlighting("Python");
+            }
         }
 
         public void Enable()
