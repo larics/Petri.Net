@@ -39,10 +39,10 @@ namespace PetriNetSimulator2
 		private Crownwood.Magic.Menus.MenuCommand mcFileSeparator1 = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFileSave = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFileSaveAs = null;
-                private Crownwood.Magic.Menus.MenuCommand mcFileSaveXML = null;
-                private Crownwood.Magic.Menus.MenuCommand mcFileLoadXML = null;
-                private Crownwood.Magic.Menus.MenuCommand mcFileSaveMatrix = null;
-                private Crownwood.Magic.Menus.MenuCommand mcFileSaveCpp = null;
+        private Crownwood.Magic.Menus.MenuCommand mcFileSaveXML = null;
+        private Crownwood.Magic.Menus.MenuCommand mcFileLoadXML = null;
+        private Crownwood.Magic.Menus.MenuCommand mcFileSaveMatrix = null;
+        private Crownwood.Magic.Menus.MenuCommand mcFileSaveCpp = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFileSeparator2 = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFileExport = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFileSeparator3 = null;
@@ -108,10 +108,10 @@ namespace PetriNetSimulator2
 		private CDiese.Actions.Action aCloseFile = new CDiese.Actions.Action();
 		private CDiese.Actions.Action aSaveFile = new CDiese.Actions.Action();
 		private CDiese.Actions.Action aSaveAsFile = new CDiese.Actions.Action();
-                private CDiese.Actions.Action aSaveXML = new CDiese.Actions.Action();
-                private CDiese.Actions.Action aLoadXML = new CDiese.Actions.Action();
-                private CDiese.Actions.Action aSaveMatrix = new CDiese.Actions.Action();
-                private CDiese.Actions.Action aSaveCpp = new CDiese.Actions.Action();
+        private CDiese.Actions.Action aSaveXML = new CDiese.Actions.Action();
+        private CDiese.Actions.Action aLoadXML = new CDiese.Actions.Action();
+        private CDiese.Actions.Action aSaveMatrix = new CDiese.Actions.Action();
+        private CDiese.Actions.Action aSaveCpp = new CDiese.Actions.Action();
 		private CDiese.Actions.Action aEditUndo = new CDiese.Actions.Action();
 		private CDiese.Actions.Action aEditRedo = new CDiese.Actions.Action();
 		private CDiese.Actions.Action aEditDelete = new CDiese.Actions.Action();
@@ -128,6 +128,8 @@ namespace PetriNetSimulator2
 
 		private System.Windows.Forms.StatusBar sbStatusBar;
 		private Crownwood.Magic.Controls.TabControl tabMagicTab;
+        private Crownwood.Magic.Docking.Content pythoneditor;
+        private Crownwood.Magic.Docking.Content pythoneoutput;
 		private System.Windows.Forms.ImageList ilToolBar;
 		private System.Windows.Forms.ImageList ilTabImages;
 		private System.Windows.Forms.Panel pnlDocumentPanel;
@@ -139,10 +141,10 @@ namespace PetriNetSimulator2
 		private System.Windows.Forms.MenuItem miZoom60;
 		private System.Windows.Forms.MenuItem miZoom50;
 		private System.Windows.Forms.MenuItem miZoom80;
-                private System.Windows.Forms.SaveFileDialog sfdSaveXMLFile;
-                private System.Windows.Forms.OpenFileDialog sfdLoadXMLFile;
-                private System.Windows.Forms.SaveFileDialog sfdSaveMatrixFile;
-                private System.Windows.Forms.SaveFileDialog sfdSaveCppFile;
+        private System.Windows.Forms.SaveFileDialog sfdSaveXMLFile;
+        private System.Windows.Forms.OpenFileDialog sfdLoadXMLFile;
+        private System.Windows.Forms.SaveFileDialog sfdSaveMatrixFile;
+        private System.Windows.Forms.SaveFileDialog sfdSaveCppFile;
 		private System.Windows.Forms.SaveFileDialog sfdSaveFile;
 		private System.Windows.Forms.OpenFileDialog ofdOpenFile;
 		private System.Windows.Forms.StatusBarPanel sbpPanelMain;
@@ -523,14 +525,14 @@ namespace PetriNetSimulator2
 			wc = dmDockingManager.AddContentWithState(ruleseditor, Crownwood.Magic.Docking.State.DockBottom);
 
 			// PY
-            Crownwood.Magic.Docking.Content pythoneditor = dmDockingManager.Contents.Add(this.rePythonEditor, "Python (or C#) code editor", this.ilMenu, 14);
+            pythoneditor = dmDockingManager.Contents.Add(this.rePythonEditor, "Python (or C#) code editor", this.ilMenu, 14);
             pythoneditor.AutoHideSize = new Size(200, 180);
             pythoneditor.DisplaySize = new Size(200, 180);
             pythoneditor.FloatingSize = new Size(200, 180);
             dmDockingManager.AddContentWithState(pythoneditor, Crownwood.Magic.Docking.State.DockBottom);
 
 
-            Crownwood.Magic.Docking.Content pythoneoutput = dmDockingManager.Contents.Add(this.rePythonOutput, "Python (or C#) output", this.ilMenu, 15);
+            pythoneoutput = dmDockingManager.Contents.Add(this.rePythonOutput, "Python (or C#) output", this.ilMenu, 15);
             pythoneoutput.AutoHideSize = new Size(200, 180);
             pythoneoutput.DisplaySize = new Size(200, 180);
             pythoneoutput.FloatingSize = new Size(200, 180);
