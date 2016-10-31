@@ -6,6 +6,7 @@ using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.Reflection;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace PetriNetSimulator2.Scripts
 {
@@ -42,6 +43,16 @@ namespace PetriNetSimulator2.Scripts
                     compilerparams.ReferencedAssemblies.Add("System.dll");
                     compilerparams.ReferencedAssemblies.Add("System.Windows.Forms.dll");
                     
+                    List<string> refs = findReferences(code);
+                    foreach(string dll in refs)
+                        compilerparams.ReferencedAssemblies.Add(dll);
+
+                    List<string> ung = findUsing(code);
+                    if(ung.Count > 0)
+                        code = code.Replace("/*USING*/", String.Join(";", ung.ToArray()) + ";");
+                    else
+                        code = code.Replace("/*USING*/", "");
+
                     string thisAss = Assembly.ReflectionOnlyLoad(Assembly.GetExecutingAssembly().FullName).Location;
                     compilerparams.ReferencedAssemblies.Add(thisAss);
 
@@ -138,10 +149,54 @@ namespace PetriNetSimulator2.Scripts
                 }
                 catch (Exception ex)
                 {
-                    this.Script_OnWriteWithColor(ex.Message + "\n", System.Drawing.Color.Red);
+                    do
+                    {
+                        this.Script_OnWriteWithColor(ex.Message + "\n", System.Drawing.Color.Red);
+                        ex = ex.InnerException;
+                    }
+                    while (ex != null);
                 }
             }
             return false;
+        }
+
+
+        public List<string> findReferences(string pyCode)
+        {
+            List<string> refs = new List<string>();
+            string regex = "^//ref:.*";
+
+            // Get first match.
+            Match match = Regex.Match(pyCode, regex, RegexOptions.Multiline);
+            do
+            {
+                if (match.Success)
+                    refs.Add(match.Value.Substring(6).Trim());
+                else
+                    break;
+                match = match.NextMatch();
+            }
+            while (match.Success);
+            return refs;
+        }
+
+        public List<string> findUsing(string pyCode)
+        {
+            List<string> refs = new List<string>();
+            string regex = "^//using.*";
+
+            // Get first match.
+            Match match = Regex.Match(pyCode, regex, RegexOptions.Multiline);
+            do
+            {
+                if (match.Success)
+                    refs.Add(match.Value.Substring(2).Trim());
+                else
+                    break;
+                match = match.NextMatch();
+            }
+            while (match.Success);
+            return refs;
         }
 
         #endregion
@@ -151,7 +206,7 @@ namespace PetriNetSimulator2.Scripts
                                     using System.Collections.Generic;
                                     using System.Text;
                                     using System.Windows.Forms;
-                                    using PetriNetSimulator2.Scripts;
+                                    using PetriNetSimulator2.Scripts; /*USING*/
 
                                     namespace PetriNetSimulator2
                                     {
