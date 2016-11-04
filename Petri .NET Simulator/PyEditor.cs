@@ -42,6 +42,19 @@ namespace PetriNetSimulator2
 
             ICSharpCode.TextEditor.Document.HighlightingManager.Manager.AddSyntaxModeFileProvider( new PetriNetSimulator2.Syntax.SyntaxModeFileProvider() ); // Attach to the text editor.
             this.pyCode.SetHighlighting("Python"); // Activate the highlighting, use the name from the SyntaxDefinition node.
+
+            this.pyCode.ActiveTextAreaControl.TextArea.GotFocus += new EventHandler(pyCode_GotFocus);
+            this.pyCode.ActiveTextAreaControl.TextArea.LostFocus += new EventHandler(pyCode_LostFocus);
+        }
+
+        void pyCode_LostFocus(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("rePythonEditor = LOST FOCUS");
+        }
+
+        void pyCode_GotFocus(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("rePythonEditor = GOT FOCUS");
         }
 
         private void pyCode_TextChanged(object sender, EventArgs e)
