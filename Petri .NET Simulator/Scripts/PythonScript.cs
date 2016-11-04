@@ -33,6 +33,15 @@ namespace PetriNetSimulator2.Scripts
                 try
                 {
                     pyEngine = Python.CreateEngine();
+
+                    ICollection<string> paths = pyEngine.GetSearchPaths();
+
+                    UriBuilder uri = new UriBuilder(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+                    string path = System.IO.Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+                    string spp = System.IO.Path.Combine(path, @"lib\site-packages");    // Add user installed packages... 
+                    paths.Add(spp);
+                    pyEngine.SetSearchPaths(paths);
+
                     pyScope = pyEngine.CreateScope();
 
                     //string version = "IronPython "+pyEngine.LanguageVersion.ToString()+"\n\r";
