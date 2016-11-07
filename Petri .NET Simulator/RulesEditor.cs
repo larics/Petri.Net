@@ -40,7 +40,7 @@ namespace PetriNetSimulator2
 
 		private PetriNetDocument pndSelectedDocument = null;
 		private ActionList alActions = new ActionList();
-		private Action acRefreshRules = new Action();
+		private CDiese.Actions.Action acRefreshRules = new CDiese.Actions.Action();
 
 		private System.Windows.Forms.ListView lvRules;
 		private System.Windows.Forms.ColumnHeader chExpression;
@@ -217,7 +217,7 @@ namespace PetriNetSimulator2
 		#region private void acRefreshRules_Update(object sender, EventArgs e)
 		private void acRefreshRules_Update(object sender, EventArgs e)
 		{
-			((Action)sender).Enabled = this.pndSelectedDocument != null;
+			((CDiese.Actions.Action)sender).Enabled = this.pndSelectedDocument != null;
 		}
 		#endregion
 

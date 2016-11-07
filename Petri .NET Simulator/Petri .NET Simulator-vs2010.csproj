@@ -1,0 +1,501 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A600359C-2A09-4440-B168-536AB5209429}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>Graphics\MainIcon.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Petri .NET Simulator 2.0</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>PetriNetSimulator2</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin-net4.0\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE;</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin-net4.0\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CDiese">
+      <Name>cdiese</Name>
+      <HintPath>..\Libs\CDiese.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.TextEditor, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython, Version=2.6.10920.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\IronPython\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Modules, Version=2.6.10920.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\IronPython\IronPython.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="MagicLibrary">
+      <Name>MagicLibrary</Name>
+      <HintPath>..\Libs\MagicLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\IronPython\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\IronPython\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\IronPython\Microsoft.Scripting.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Debugging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\IronPython\Microsoft.Scripting.Debugging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.ExtensionAttribute, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\IronPython\Microsoft.Scripting.ExtensionAttribute.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+      <HintPath>C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+      <HintPath>C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Design">
+      <Name>System.Design</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+      <HintPath>C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+      <HintPath>C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+      <HintPath>C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.XML.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="About21.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="About21.Designer.cs">
+      <DependentUpon>About21.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Clipboard.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConnectableControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Connection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DescriptionLabel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DocumentExplorer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorSurface.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Input.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interfaces.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntMatrix.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Matrix.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MatrixViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MetafileExporter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Misc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Oscillogram.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Output.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PetriNetDocument.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PetriNetDocumentInstanceCounter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PetriNetEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PetriNetEditorMergeModule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Place.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlaceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlaceInput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlaceOperation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlaceOutput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlaceResource.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Port.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertiesInspector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertiesInspectorSorter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="PyEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PyEditor.Designer.cs">
+      <DependentUpon>PyEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PyOutput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PyOutput.Designer.cs">
+      <DependentUpon>PyOutput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ReleaseTime.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ReleaseTimesEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ReleaseTimesEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResizableControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResponseOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ResponsePlacesEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ResponsePlacesEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RuleEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RulesEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Scripts\BaseScript.cs" />
+    <Compile Include="Scripts\CSharpScript.cs" />
+    <Compile Include="Scripts\IScripter.cs" />
+    <Compile Include="Scripts\PythonScript.cs" />
+    <Compile Include="SelectableAndMoveableControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SimulateParamForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimulateParamForm.Designer.cs">
+      <DependentUpon>SimulateParamForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Simulator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StringMatrix.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Subsystem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SubsystemEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Syntax\SyntaxModeFileProvider.cs" />
+    <Compile Include="TextPropertyEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TextPropertyEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ToolBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Transition.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UndoRedoItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="About21.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>About21.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DocumentExplorer.resx">
+      <DependentUpon>DocumentExplorer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorSurface.resx">
+      <DependentUpon>EditorSurface.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MatrixViewer.resx">
+      <DependentUpon>MatrixViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Oscillogram.resx">
+      <DependentUpon>Oscillogram.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PetriNetDocument.resx">
+      <DependentUpon>PetriNetDocument.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PetriNetEditor.resx">
+      <DependentUpon>PetriNetEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Place.resx">
+      <DependentUpon>Place.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlaceControl.resx">
+      <DependentUpon>PlaceControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlaceInput.resx">
+      <DependentUpon>PlaceInput.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlaceOperation.resx">
+      <DependentUpon>PlaceOperation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlaceOutput.resx">
+      <DependentUpon>PlaceOutput.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlaceResource.resx">
+      <DependentUpon>PlaceResource.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertiesInspector.resx">
+      <DependentUpon>PropertiesInspector.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PyEditor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PyEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PyOutput.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PyOutput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReleaseTimesEditorForm.resx">
+      <DependentUpon>ReleaseTimesEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResizableControl.resx">
+      <DependentUpon>ResizableControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResponsePlacesEditorForm.resx">
+      <DependentUpon>ResponsePlacesEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RuleEditor.resx">
+      <DependentUpon>RuleEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RulesEditor.resx">
+      <DependentUpon>RulesEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectableAndMoveableControl.resx">
+      <DependentUpon>SelectableAndMoveableControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimulateParamForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SimulateParamForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="splash.png" />
+    <EmbeddedResource Include="SubsystemEditor.resx">
+      <DependentUpon>SubsystemEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextPropertyEditorControl.resx">
+      <DependentUpon>TextPropertyEditorControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ToolBox.resx">
+      <DependentUpon>ToolBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transition.resx">
+      <DependentUpon>Transition.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Libs\TreeViewHelper.dll">
+      <Link>TreeViewHelper.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="Syntax\Python.xshd" />
+    <EmbeddedResource Include="Syntax\CSharp.xshd" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syntax\SyntaxModes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
