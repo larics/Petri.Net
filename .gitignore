@@ -6,6 +6,7 @@ tools/
 manual/
 Libs/*.dll
 Libs/IronPython/
+Libs/IronPython.27/
 
 # C# obj folder
 obj/
