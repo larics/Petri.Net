@@ -28,6 +28,7 @@ namespace PetriNetSimulator2
         private PyOutput rePythonOutput = new PyOutput();
 		private Simulator sSimulator = null;
 		private ProgressBar pbSimulationProgress;
+        private RecentFilesManager rfm = null;
 
 		protected Crownwood.Magic.Docking.DockingManager dmDockingManager = null;
 
@@ -46,7 +47,11 @@ namespace PetriNetSimulator2
 		private Crownwood.Magic.Menus.MenuCommand mcFileSeparator2 = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFileExport = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFileSeparator3 = null;
+        private Crownwood.Magic.Menus.MenuCommand mcFileRecentFiles = null;
+        private Crownwood.Magic.Menus.MenuCommand mcFileSeparator4 = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFileExit = null;
+
+
 		private Crownwood.Magic.Menus.MenuCommand mcEdit = null;
 		private Crownwood.Magic.Menus.MenuCommand mcEditUndo = null;
 		private Crownwood.Magic.Menus.MenuCommand mcEditRedo = null;
@@ -696,6 +701,13 @@ namespace PetriNetSimulator2
 			mcFileSeparator3 = new Crownwood.Magic.Menus.MenuCommand("-");
 			mcFile.MenuCommands.Add(mcFileSeparator3);
 
+
+            mcFileRecentFiles = new Crownwood.Magic.Menus.MenuCommand("Recent files");
+            mcFile.MenuCommands.Add(mcFileRecentFiles);
+
+            mcFileSeparator4 = new Crownwood.Magic.Menus.MenuCommand("-");
+            mcFile.MenuCommands.Add(mcFileSeparator4);
+
 			mcFileExit = new Crownwood.Magic.Menus.MenuCommand("E&xit");
 			mcFileExit.Click += new EventHandler(mcFileExit_Click);
 			mcFile.MenuCommands.Add(mcFileExit);
@@ -1084,7 +1096,6 @@ namespace PetriNetSimulator2
 			// Create ProgressBar
 			this.pbSimulationProgress = new ProgressBar();
 			this.pbSimulationProgress.Hide();
-
 #if DEMO
 			// Initialize tmrDemoTimer
 			this.tmrDemoTimer.Interval = 1000;
@@ -1103,11 +1114,16 @@ namespace PetriNetSimulator2
                 loadCronwoodFail = false;
             }
 		}
+
 		#endregion
 
 		#region private void MainWindow_Load(object sender, System.EventArgs e)
 		private void MainWindow_Load(object sender, System.EventArgs e)
 		{
+            // Initialize recent files list...
+            this.rfm = new RecentFilesManager(this, mcFileRecentFiles, 10);
+            this.rfm.OnRecentFileSelected += new EventHandler(rfm_OnRecentFileSelected);
+
 			// Initialize StatusBar
 			sbpPanelMain.Width = this.Width - 200;
 			sbpSimulationTimePanel.Width = 200;
@@ -1270,6 +1286,8 @@ namespace PetriNetSimulator2
 
 			tabMagicTab.SelectedIndex = tabMagicTab.TabPages.Count - 1;
 			pnd.PerformActivation();
+
+            rfm.InsertFileToRecentList(sFileName);
 		}
 		#endregion
 
@@ -2547,6 +2565,12 @@ System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = true;
         {
             this.pythoneditor.FullTitle = sn + " editor";    //
             this.pythoneoutput.FullTitle = sn + " output";
+        }
+
+        void rfm_OnRecentFileSelected(object sender, EventArgs e)
+        {
+            string sf = this.rfm.GetSelectedRecentFile();
+            this.OpenFile(sf);
         }
 	}
 }

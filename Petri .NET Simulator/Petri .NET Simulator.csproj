@@ -252,6 +252,7 @@
     <Compile Include="PyOutput.Designer.cs">
       <DependentUpon>PyOutput.cs</DependentUpon>
     </Compile>
+    <Compile Include="RecentFilesManager.cs" />
     <Compile Include="ReleaseTime.cs">
       <SubType>Code</SubType>
     </Compile>
