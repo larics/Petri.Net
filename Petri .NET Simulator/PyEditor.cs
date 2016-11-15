@@ -10,6 +10,8 @@ namespace PetriNetSimulator2
 {
     public partial class PyEditor : System.Windows.Forms.UserControl
     {
+        public MainWindow mainWindow;
+
 		#region public PetriNetDocument Document
 		public PetriNetDocument Document
 		{
@@ -50,11 +52,13 @@ namespace PetriNetSimulator2
         void pyCode_LostFocus(object sender, EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("rePythonEditor = LOST FOCUS");
+            mainWindow.mcMenuControl.Enabled = true;
         }
 
         void pyCode_GotFocus(object sender, EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("rePythonEditor = GOT FOCUS");
+            mainWindow.mcMenuControl.Enabled = false;
         }
 
         private void pyCode_TextChanged(object sender, EventArgs e)

@@ -32,7 +32,7 @@ namespace PetriNetSimulator2
 
 		protected Crownwood.Magic.Docking.DockingManager dmDockingManager = null;
 
-		private Crownwood.Magic.Menus.MenuControl mcMenuControl = null;
+		public Crownwood.Magic.Menus.MenuControl mcMenuControl = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFile = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFileNew = null;
 		private Crownwood.Magic.Menus.MenuCommand mcFileOpen = null;
@@ -1887,6 +1887,7 @@ namespace PetriNetSimulator2
 			// Refresh RulesEditor
 			this.reRulesEditor.Document = this.SelectedDocument;
 			this.deDocumentExplorer.Document = this.SelectedDocument;
+            this.rePythonEditor.mainWindow = this;
             this.rePythonEditor.Document = this.SelectedDocument;
             if(this.SelectedDocument  != null)
             {
