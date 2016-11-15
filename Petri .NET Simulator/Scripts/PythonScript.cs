@@ -49,8 +49,8 @@ namespace PetriNetSimulator2.Scripts
 
                     // Setting the output streams
                     pyEngine.CreateScriptSourceFromString(pnd.pyCode, SourceCodeKind.Statements).Compile().Execute(pyScope);
-
                     pyScope.SetVariable("mysimulator", this);
+
                     string code = "import sys\n" +
                                     "class StdoutCatcher:\n" +
                                     "    def write(self, str):\n" +
@@ -119,8 +119,12 @@ namespace PetriNetSimulator2.Scripts
                 {
                     this.RecalculateVectors();
 
-                    for(int idx = 0; idx < names.Count; idx++)
+                    Dictionary<string, int> oldValues = new Dictionary<string, int>();
+                    for (int idx = 0; idx < names.Count; idx++)
+                    {
+                        oldValues[names[idx]] = states[idx];
                         pyScope.SetVariable(names[idx], states[idx]);
+                    }
 
                     pyScope.SetVariable("names_vector", names);
                     pyScope.SetVariable("states_vector", states);
@@ -143,7 +147,9 @@ namespace PetriNetSimulator2.Scripts
                     foreach (Place p in pnd.Places)
                     {
                         string varname = p.GetShortString();
-                        p.Tokens = (int)pyScope.GetVariable(varname);
+                        int newValue = (int)pyScope.GetVariable(varname);
+                        if(newValue != oldValues[varname])  // Update this one if someone change it !!!!
+                            p.Tokens = newValue;
                     }
                     return true;
 
