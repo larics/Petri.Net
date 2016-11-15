@@ -2571,6 +2571,8 @@ System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = true;
         {
             string sf = this.rfm.GetSelectedRecentFile();
             this.OpenFile(sf);
+            mcSimulateStartWithParam.Enabled = mcSimulateStart.Enabled = tbbStart.Enabled = true;
+            mcSimulateStep.Enabled = tbbStep.Enabled = true;
         }
 	}
 }
