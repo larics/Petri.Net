@@ -1,7 +1,7 @@
 **C# Example**
 ----------
 
-This example shows how to use C# inside Petri.NET simulator. It is a modified version of illustrated example [here](https://github.com/larics/Petri.NET/wiki/15.Using-C#)
+This example shows how to use C# inside Petri.NET simulator. It is a modified version of illustrated example [here](https://github.com/larics/Petri.NET/wiki/15.Using-CSharp)
 
 ![enter image description here](https://media.giphy.com/media/l0HlEtFnevmEDaa2Y/source.gif)
 
