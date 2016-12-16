@@ -18,5 +18,6 @@ int D4=2;
 ```C#
 ObjArduinoUno=new ArduinoUno("COM190",57600);
 ```
-![Blinking LED with Petri.NET simulator](https://media.giphy.com/media/3o6Zt3wBEhSQJaznQA/source.gif)
+Blinking LED with Petri.NET simulator (see it in action)
+https://media.giphy.com/media/3o6ZtpFkaogkDTqHDy/source.gif
 
